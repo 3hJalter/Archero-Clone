@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e936d3672c721140b528b3b25cc6b21, type: 3}
+  m_Name: ShopData
+  m_EditorClassIdentifier: 
+  weaponDataList:
+  - item: {fileID: 202509679834873764, guid: cc44dfe51b24dc2418a774e39453af21, type: 3}
+    cost: 0
+    image: {fileID: 21300000, guid: e08cf3ea8bf0f674388d53ef40f554d6, type: 3}
+    isBought: 1
+  - item: {fileID: 202509679834873764, guid: bcf8b1069b808d04ca0f403e10956092, type: 3}
+    cost: 1000
+    image: {fileID: 21300000, guid: 8b4f81eff8c62a84087fb5f70f5062f2, type: 3}
+    isBought: 0
+  - item: {fileID: 8150214159005081110, guid: 33d19ebe02f647a44a46336b0677ac37, type: 3}
+    cost: 1500
+    image: {fileID: 21300000, guid: e4f3bcf6c1c293945bdab4da0e954cac, type: 3}
+    isBought: 0
+  - item: {fileID: 1492986721290552225, guid: 5ea53c315422bfe4f9f33e97e7bf7d98, type: 3}
+    cost: 2000
+    image: {fileID: 21300000, guid: 4f8e365fe3239564cadcd65a8d504ab5, type: 3}
+    isBought: 0
+  - item: {fileID: 6453847596261081466, guid: 4e4ba59b4989b424b9facd2fd3b7f081, type: 3}
+    cost: 2500
+    image: {fileID: 21300000, guid: ca1e64b38c6efcf48abe6563ac4a5647, type: 3}
+    isBought: 0
+  - item: {fileID: 4174090310597517288, guid: 25d0c2ef60a66a347bfd279716309e8a, type: 3}
+    cost: 3000
+    image: {fileID: 21300000, guid: 66c4983db31ef4d469b1a51d50236dfa, type: 3}
+    isBought: 0
+  - item: {fileID: 5066200144310128449, guid: 38fc2a36169409a49b02aa3866c71fca, type: 3}
+    cost: 3500
+    image: {fileID: 21300000, guid: fb20c0e4ba6d5084a822e8234b134575, type: 3}
+    isBought: 0
+  - item: {fileID: 5433604559789609498, guid: 2ed77ef362f13ec4da2e33a59a7f96e8, type: 3}
+    cost: 4000
+    image: {fileID: 21300000, guid: 781a9c37b4972ea4cbca9bb116dd1852, type: 3}
+    isBought: 0
+  - item: {fileID: 5896328813863224339, guid: 254e89b5c644ec7479bab1e22e9789f8, type: 3}
+    cost: 4500
+    image: {fileID: 21300000, guid: 43490a621bdf8534bbcbe0ac29f6d296, type: 3}
+    isBought: 0
+  - item: {fileID: 1307683860149716503, guid: f14f18d5be6d6b04aba6126d3c4d9f9e, type: 3}
+    cost: 5000
+    image: {fileID: 21300000, guid: 28379e3ed14013f41b06de0b6c24e7f5, type: 3}
+    isBought: 0
+  - item: {fileID: 7426210088266313003, guid: 39c135ee1ce2f2f4c85dec4ba7ab8da7, type: 3}
+    cost: 5500
+    image: {fileID: 21300000, guid: a396928fbc527f24ca57da9cd17d1623, type: 3}
+    isBought: 0
+  hatDataList:
+  - item: {fileID: 222959945253246082, guid: b738c599cd78fd64a9afc12138a77026, type: 3}
+    cost: 0
+    image: {fileID: 21300000, guid: 70f78e062098c4496b852abefff63acf, type: 3}
+    isBought: 1
+  - item: {fileID: 222959945253246082, guid: 37e28d8b0df1991408087eb7f586d673, type: 3}
+    cost: 1000
+    image: {fileID: 21300000, guid: 70dd77c05c13c4a449dd9796d426a679, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: 6a66c8365c7a5684cbd8aad8611f7f6e, type: 3}
+    cost: 2000
+    image: {fileID: 21300000, guid: f9f6eab9243c0954f88f978c8c9b4ade, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: d564de61e9141b64393d09a570a30f06, type: 3}
+    cost: 1500
+    image: {fileID: 21300000, guid: fafbd7c46c5dbc4489e6304189e36674, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: 5de0bc628882fd543aaa73846e7ce1ff, type: 3}
+    cost: 2000
+    image: {fileID: 21300000, guid: 9dfca9cef45163c419b445882ea0bd32, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: d43fa9c3c032117499496f6403f664b1, type: 3}
+    cost: 3000
+    image: {fileID: 21300000, guid: a4f90738a5933b044acea719f0c79f6b, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: f06c195ae94d6784190554588a64618a, type: 3}
+    cost: 3500
+    image: {fileID: 21300000, guid: 7fd30b8e61fb372468385b3aae37c177, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: ed6afe4438d40aa4e94d67aecff598e2, type: 3}
+    cost: 4000
+    image: {fileID: 21300000, guid: daaaa7336521fa0458e390981ed53dfa, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: d999537e30915744b8dcb77b0bf62c5d, type: 3}
+    cost: 4500
+    image: {fileID: 21300000, guid: b281ac2febc589641aa73a4a3ceb28d8, type: 3}
+    isBought: 0
+  - item: {fileID: 222959945253246082, guid: ca1bded1b85944e4c9e191d5d75a08d6, type: 3}
+    cost: 5000
+    image: {fileID: 21300000, guid: d1a84f8908365c9409c5e2855362633c, type: 3}
+    isBought: 1
+  - item: {fileID: 222959945253246082, guid: 64c397f84e4072444974aba118c94d6b, type: 3}
+    cost: 5500
+    image: {fileID: 21300000, guid: 0bead158a3d1bb8429f9702309bc101d, type: 3}
+    isBought: 0
+  pantDataList:
+  - item: {fileID: 730687787419404326, guid: b297b702d7a7ab441865abb3b7cbe328, type: 3}
+    cost: 0
+    image: {fileID: 21300000, guid: 70f78e062098c4496b852abefff63acf, type: 3}
+    isBought: 1
+  - item: {fileID: 730687787419404326, guid: 6502e6aed93d9964ea12d4eb3f266705, type: 3}
+    cost: 500
+    image: {fileID: 21300000, guid: e4d349a1e99479b42882cbf208c4e894, type: 3}
+    isBought: 0
+  - item: {fileID: 8824745010129554237, guid: 8edc36a142e601c44beaf361a20c3903, type: 3}
+    cost: 1000
+    image: {fileID: 21300000, guid: 47c8d5358d60d474388d6a7e89a221aa, type: 3}
+    isBought: 0
+  - item: {fileID: 4950144414159071860, guid: d89d6239b65146c448e74d54b3e10b96, type: 3}
+    cost: 1500
+    image: {fileID: 21300000, guid: e119361a0d7fd344eb37842037719c31, type: 3}
+    isBought: 0
+  - item: {fileID: 7294002987958579470, guid: ff9e50a2d311f7948955a05361a96cf7, type: 3}
+    cost: 2000
+    image: {fileID: 21300000, guid: e97fa78b135de6144a5983996978204a, type: 3}
+    isBought: 1
+  - item: {fileID: 7405797491288307555, guid: d96960c875187484f97e3a2650155c2a, type: 3}
+    cost: 2500
+    image: {fileID: 21300000, guid: e6cdcdd7f2a0d8b4fb11ca94d0d7d775, type: 3}
+    isBought: 0
+  - item: {fileID: 3132339811866590319, guid: 82c46319a8968cc4da575404a92ebdef, type: 3}
+    cost: 3000
+    image: {fileID: 21300000, guid: 60bbae7447731bc4f8f7921a7b846832, type: 3}
+    isBought: 0
+  - item: {fileID: 2608949310437567366, guid: e5942ac261f3c5b4089bc0a9ceed852a, type: 3}
+    cost: 3500
+    image: {fileID: 21300000, guid: f5d61e52e0c02c7499cc3e23eb8c7f3f, type: 3}
+    isBought: 0
+  - item: {fileID: 1971017697765066078, guid: 3dfede0dfd2a1c64aa8c002fbc5f064e, type: 3}
+    cost: 4000
+    image: {fileID: 21300000, guid: 26709d5737c6d6e4b90ed4b589a29b6b, type: 3}
+    isBought: 0
+  - item: {fileID: 2304201420932308562, guid: 47da7ab58507159438e8dacdb428d017, type: 3}
+    cost: 4500
+    image: {fileID: 21300000, guid: 006435c12055ced4384c81603df71e0e, type: 3}
+    isBought: 0
