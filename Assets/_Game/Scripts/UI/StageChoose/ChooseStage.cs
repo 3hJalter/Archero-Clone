@@ -1,14 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ChooseStage : UICanvas
 {
-    public void MainMenuButton()
+
+    private void Awake()
+    {
+        OnInit();
+    }
+
+    private void OnEnable()
+    {
+        // TODO
+    }
+
+    private void OnInit()
+    {
+        
+    }
+    
+    public void CloseButton()
     {
         UIManager.Ins.OpenUI<MainMenu>();
         Close();
     }
-    
     
 }

@@ -18,7 +18,7 @@ public class MainMenu : UICanvas
 
     public void PlayButton()
     {
-        LevelManager.OnStartGame();
+        LevelManager.Ins.OnStartGame();
         CameraFollower.Ins.ChangeState(CameraState.InGame);
         UIManager.Ins.OpenUI<Gameplay>();
         Close();

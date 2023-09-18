@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameData : Singleton<GameData>
@@ -5,6 +6,10 @@ public class GameData : Singleton<GameData>
     [SerializeField] private PlayerData playerData;
 
     [SerializeField] private ShopData shopData;
+
+    [SerializeField] private StageData stageData;
+    
+    public List<Stage> StageDataList => stageData.stageList;
     
     public PlayerData PlayerData => playerData;
     

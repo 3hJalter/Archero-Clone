@@ -9,7 +9,7 @@ public class Skin : HMonoBehaviour
         allBody.localPosition = Vector3.zero;
     }
     
-    // Fix Anim Not Reset Rotation Bug
+    // Fix Anim Not Reset Rotation 
     public void ResetBodyRotation()
     {
         allBody.localRotation = Quaternion.identity;

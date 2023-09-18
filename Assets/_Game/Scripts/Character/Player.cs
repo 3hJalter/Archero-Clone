@@ -105,7 +105,7 @@ public class Player : Entity, IInteractWallObject
 
     protected override void DeSpawn()
     {
-        LevelManager.OnPlayerDeath();
+        LevelManager.Ins.OnPlayerDeath();
         gameObject.SetActive(false);
     }
 

@@ -3,10 +3,21 @@ using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    public LevelData levelData;
+    
     public Player player;
     [SerializeField] private CoinSpawner coinSpawner;
     [SerializeField] private int stageIndex;
+
+    public int StageIndex
+    {
+        set => stageIndex = value;
+    }
+
+    public int LEVELIndex
+    {
+        set => levelIndex = value;
+    }
+
     [SerializeField] private int levelIndex;
     [SerializeField] private int coinInLevel;
     [SerializeField] public int totalCoinGet;
@@ -78,7 +89,7 @@ public class LevelManager : Singleton<LevelManager>
         return enemy;
     }
 
-    public static void OnPlayerDeath()
+    public void OnPlayerDeath()
     {
         UIManager.Ins.OpenUI<Revive>().OnInit();
     }
@@ -92,13 +103,13 @@ public class LevelManager : Singleton<LevelManager>
             Destroy(_currentLevel.gameObject);
         }
 
-        if (stageIndex >= levelData.stageList.Count)
+        if (stageIndex >= GameData.Ins.StageDataList.Count)
             ResetStageData();
 
-        if (levelIndex >= levelData.stageList[stageIndex].CountLevel())
+        if (levelIndex >= GameData.Ins.StageDataList[stageIndex].CountLevel())
         {
             stageIndex++;
-            if (stageIndex >= levelData.stageList.Count) ResetStageData();
+            if (stageIndex >= GameData.Ins.StageDataList.Count) ResetStageData();
             else ResetLevelData();
         }
 
@@ -109,7 +120,7 @@ public class LevelManager : Singleton<LevelManager>
         // }
         // _currentLevel = Instantiate(levelData.levelList[levelIndex]);
 
-        _currentLevel = Instantiate(levelData.stageList[stageIndex].GetLevel(levelIndex));
+        _currentLevel = Instantiate(GameData.Ins.StageDataList[stageIndex].GetLevel(levelIndex));
         _currentLevel.OnInit();
         OnSpawnEnemy();
     }
@@ -119,7 +130,7 @@ public class LevelManager : Singleton<LevelManager>
         OnSpawnEnemy();
     }
 
-    public static void OnStartGame()
+    public void OnStartGame()
     {
         GameManager.Ins.ChangeState(GameState.InGame);
     }
@@ -137,14 +148,14 @@ public class LevelManager : Singleton<LevelManager>
         coinInLevel = 0;
     }
 
-    internal void OnResetStage()
+    internal void OnResetStage(bool openMainMenu = true)
     {
         ResetLevelData();
         LoadLevel();
         OnInit();
         coinInLevel = 0;
         totalCoinGet = 0;
-        UIManager.Ins.OpenUI<MainMenu>();
+        if (openMainMenu) UIManager.Ins.OpenUI<MainMenu>();
     }
 
     internal void OnOutStage()
@@ -169,11 +180,11 @@ public class LevelManager : Singleton<LevelManager>
     internal void OnNextLevel()
     {
         levelIndex++;
-        if (levelIndex >= levelData.stageList[stageIndex].CountLevel())
+        if (levelIndex >= GameData.Ins.StageDataList[stageIndex].CountLevel())
         {
-            levelData.stageList[stageIndex].PassStage();
+            GameData.Ins.StageDataList[stageIndex].PassStage();
             stageIndex++;
-            if (stageIndex >= levelData.stageList.Count) ResetStageData();
+            if (stageIndex >= GameData.Ins.StageDataList.Count) ResetStageData();
             else ResetLevelData();
         }
         else
