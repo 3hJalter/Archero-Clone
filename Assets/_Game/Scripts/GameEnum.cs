@@ -123,8 +123,9 @@ public enum SkillLevel
 
 public enum StageName
 {
-    Stage0 = 0,
-    Stage1 = 1,
+    CityOfShadow = 0,
+    CloudyBeach = 1,
+    WhisperingWoods = 2,
 }
 
 public enum EnemyPhase

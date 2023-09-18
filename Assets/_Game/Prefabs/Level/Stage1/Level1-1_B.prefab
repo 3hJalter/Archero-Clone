@@ -2379,7 +2379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd8aeb158fc2f742b245cb4b4925915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelType: 1
+  levelType: 2
   enemySpawns:
   - enemyType: 4
     spawnPoints:

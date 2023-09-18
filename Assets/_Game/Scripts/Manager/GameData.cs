@@ -10,6 +10,17 @@ public class GameData : Singleton<GameData>
     [SerializeField] private StageData stageData;
     
     public List<Stage> StageDataList => stageData.stageList;
+
+    public string GetReachedStageIndexString()
+    {
+        int index = 0;
+        for (int i = 0; i < StageDataList.Count; i++)
+        {
+            if (StageDataList[i].IsPassed()) index = i;
+        }
+        index += 1;
+        return index.ToString();
+    }
     
     public PlayerData PlayerData => playerData;
     

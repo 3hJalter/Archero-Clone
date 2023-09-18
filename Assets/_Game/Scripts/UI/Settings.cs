@@ -14,6 +14,11 @@ public class Settings : UICanvas
         base.Close();
     }
 
+    private void StillFreezeClose()
+    {
+        base.Close();
+    }
+
     public void ContinueButton()
     {
         UIManager.Ins.OpenUI<Gameplay>();
@@ -28,10 +33,8 @@ public class Settings : UICanvas
 
     public void MainMenuButton()
     {
-        GameManager.Ins.ChangeState(GameState.MainMenu);
-        CameraFollower.Ins.ChangeState(CameraState.MainMenu);
-        LevelManager.Ins.OnResetStage();
-        Close();
+        UIManager.Ins.OpenUI<GoMainMenuPopup>();
+        StillFreezeClose();
     }
     
 }

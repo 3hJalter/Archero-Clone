@@ -17,6 +17,8 @@ public abstract class Constants
     // STRING
     public const string STAGE = "Stage";
     public const string LEVEL = "Level";
+    public const string TOTAL_COIN_GET_IN_LEVEL = "TotalCoinGetInLevel";
+    public const string LAST_PLAYER_HEALTH = "LastPlayerHealth";
 
-    
+
 }

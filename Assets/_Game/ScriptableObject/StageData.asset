@@ -25,3 +25,8 @@ MonoBehaviour:
     isPassed: 0
     levelList:
     - {fileID: 6634102680068589988, guid: fad322cc965ab9045af7f7ed6058b17a, type: 3}
+  - stageName: 2
+    image: {fileID: 21300000, guid: 879d2339866da49968a95d6b3f418194, type: 3}
+    isPassed: 0
+    levelList:
+    - {fileID: 2741840780566982618, guid: 4db6fc2c24037e545bea42bf15386c91, type: 3}

@@ -15,6 +15,7 @@ public abstract class Entity : GameUnit
 
     [Title("Entity Data")] [SerializeField]
     protected EntityPrimitiveData entityPrimitiveData;
+    
 
     [SerializeField] protected EntityData entityData;
     [SerializeField] protected EntityState entityState;
@@ -106,6 +107,12 @@ public abstract class Entity : GameUnit
         return skin.Tf.position;
     }
 
+    public void SetHealth(int health)
+    {
+        entityData.health = health;
+        healthBar.OnChangeHealthBar();
+    }
+    
     [Serializable]
     protected class SpawnBulletPointAndDirection
     {

@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_isThroughDoor) return;
-        LevelManager.Ins.OnNextLevel();
+        LevelManager.Ins.OpenNextLevelUI();
         _isThroughDoor = true;
     }
 
