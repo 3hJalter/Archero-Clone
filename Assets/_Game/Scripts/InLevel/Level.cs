@@ -6,9 +6,16 @@ using UnityEngine.AI;
 public class Level : MonoBehaviour
 {
     [SerializeField] private LevelType levelType = LevelType.Normal;
+
+    public LevelType LEVELType => levelType;
+
     [SerializeField] private List<EnemySpawn> enemySpawns = new();
     [SerializeField] private NavMeshData navMeshData;
     [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private Transform bossSpawnPoint;
+
+    public Transform BossSpawnPoint => bossSpawnPoint;
+
     [SerializeField] private Door door;
     public Transform PlayerSpawnPoint => playerSpawnPoint;
 
@@ -44,7 +51,7 @@ public class Level : MonoBehaviour
                 // Open Tutorial UI
                 break;
             case LevelType.Boss:
-                // OPen Boss UI
+                // UIManager.Ins.OpenUI<BossUI>().OnInit(bossSpawnPoint);
                 break;
         }
     }

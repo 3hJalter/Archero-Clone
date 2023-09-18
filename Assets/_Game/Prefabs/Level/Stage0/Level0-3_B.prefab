@@ -3085,6 +3085,7 @@ MonoBehaviour:
     - {fileID: 6634102680331961143}
   navMeshData: {fileID: 23800000, guid: cfe96e8a732358a4989859c7977e6ea5, type: 2}
   playerSpawnPoint: {fileID: 3837599800902424121}
+  bossSpawnPoint: {fileID: 6634102680331961143}
   door: {fileID: 2703362349843154307}
 --- !u!1 &6634102680077347847
 GameObject:

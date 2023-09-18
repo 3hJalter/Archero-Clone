@@ -20,7 +20,11 @@ public class Player : Entity, IInteractWallObject
     
     private void FixedUpdate()
     {
-        if (!GameManager.Ins.IsState(GameState.InGame)) return;
+        if (!GameManager.Ins.IsState(GameState.InGame))
+        {
+            rb.velocity = Vector3.zero;
+            return;
+        }
         switch (entityState)
         {
             case EntityState.Die:

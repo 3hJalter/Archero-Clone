@@ -683,9 +683,6 @@ MonoBehaviour:
     moveSpeed: 0
     deSpawnTime: 0
   entityState: 0
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
   isNearPlayer: 0
   navMeshAgent: {fileID: 2596272084930874527}
   bullet: {fileID: 7319263497849517514, guid: 0298bfdf196398d43a6b162857f169f6, type: 3}
@@ -745,8 +742,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 2, z: 2.5}
-  m_Center: {x: 0, y: 1, z: 1.75}
+  m_Size: {x: 3, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 1.5}
 --- !u!1 &2596272084934414917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,9 +1434,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allBody: {fileID: 2596272085353909407}
-  head: {fileID: 0}
-  rightHand: {fileID: 0}
-  pant: {fileID: 0}
 --- !u!1 &2596272085282790288
 GameObject:
   m_ObjectHideFlags: 0

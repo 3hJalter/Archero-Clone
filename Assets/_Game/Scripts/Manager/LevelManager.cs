@@ -7,8 +7,6 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private CoinSpawner coinSpawner;
     [SerializeField] private int stageIndex;
 
-    public int LEVELIndex => levelIndex;
-
     [SerializeField] private int levelIndex;
     [SerializeField] private int coinInLevel;
     [SerializeField] public int totalCoinGet;
@@ -17,6 +15,8 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private List<Enemy> enemyList = new();
 
     private Level _currentLevel;
+
+    public int LEVELIndex => levelIndex;
 
     public int StageIndex
     {
@@ -36,6 +36,16 @@ public class LevelManager : Singleton<LevelManager>
         LoadLevel();
         OnInit();
         UIManager.Ins.OpenUI<MainMenu>();
+    }
+
+    public LevelType GetCurrentLevelType()
+    {
+        return _currentLevel.LEVELType;
+    }
+
+    public Transform GetCurrentLevelBossSpawnPoint()
+    {
+        return _currentLevel.BossSpawnPoint;
     }
 
     public bool CanContinue()
@@ -137,6 +147,7 @@ public class LevelManager : Singleton<LevelManager>
     public void OnStartGame()
     {
         GameManager.Ins.ChangeState(GameState.InGame);
+        // OpenNextLevelUI();
     }
 
     private void OnFinishLevel()
@@ -158,7 +169,7 @@ public class LevelManager : Singleton<LevelManager>
         LoadLevel();
         OnInit();
         coinInLevel = 0;
-        
+
         if (openMainMenu) UIManager.Ins.OpenUI<MainMenu>();
     }
 
@@ -183,9 +194,9 @@ public class LevelManager : Singleton<LevelManager>
 
     internal void OpenNextLevelUI()
     {
-        UIManager.Ins.OpenUI<NextLevel>();
+        UIManager.Ins.OpenUI<NextLevel>().OnInit();
     }
-    
+
     internal void OnNextLevel()
     {
         levelIndex++;
@@ -239,7 +250,7 @@ public class LevelManager : Singleton<LevelManager>
         levelIndex = 0;
         totalCoinGet = 0;
         lastPlayerHealth = player.GetMaxHealth();
-        PlayerPrefs.SetInt(Constants.LAST_PLAYER_HEALTH,lastPlayerHealth);
+        PlayerPrefs.SetInt(Constants.LAST_PLAYER_HEALTH, lastPlayerHealth);
         PlayerPrefs.SetInt(Constants.TOTAL_COIN_GET_IN_LEVEL, totalCoinGet);
         PlayerPrefs.SetInt(Constants.STAGE, stageIndex);
         PlayerPrefs.SetInt(Constants.LEVEL, levelIndex);

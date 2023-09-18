@@ -12,7 +12,7 @@ public class CameraFollower : Singleton<CameraFollower>
     [SerializeField] private CameraState state;
     [SerializeField] private float cameraMoveSpeed;
     public Transform tf;
-    public Transform playerTf;
+    public Transform targetTf;
     
     [Title("Current Position and Rotation")]
     [SerializeField] private Vector3 currentPositionOffset; 
@@ -37,7 +37,7 @@ public class CameraFollower : Singleton<CameraFollower>
 
     private void FixedUpdate()
     {
-        tf.position = Vector3.Lerp(tf.position, playerTf.position + currentPositionOffset, Time.deltaTime * cameraMoveSpeed);
+        tf.position = Vector3.Lerp(tf.position, targetTf.position + currentPositionOffset, Time.deltaTime * cameraMoveSpeed);
         tf.rotation = Quaternion.Lerp(tf.rotation, currentRotationOffset, Time.deltaTime * cameraMoveSpeed);
     }
 
