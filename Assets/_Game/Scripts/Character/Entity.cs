@@ -24,8 +24,6 @@ public abstract class Entity : GameUnit
     protected bool IsCancelAttack;
     public Dictionary<SkillType, Skill> SkillDic { get; protected set; }
 
-    public LayerMask targetLayer;
-    
     public bool IsDie()
     {
         return entityData.health <= 0;
@@ -78,18 +76,6 @@ public abstract class Entity : GameUnit
 
     protected abstract void DeSpawn();
 
-    protected void SetCanAttack(bool isCan)
-    {
-        CanAttack = isCan;
-    }
-
-    public void CancelAttack()
-    {
-        if (IsCancelAttack) return;
-        CancelInvoke();
-        IsCancelAttack = true;
-    }
-
     protected void ChangeAnim(string animName)
     {
         if (CurrentAnim == animName) return;
@@ -119,21 +105,28 @@ public abstract class Entity : GameUnit
     {
         return skin.Tf.position;
     }
-}
 
-[Serializable]
-public class EntityData
-{
-    public int health;
-    public int damage;
-    public float bulletSpeed;
-    public float attackSpeed;
-    public float moveSpeed;
-    public float deSpawnTime;
-}
+    [Serializable]
+    protected class SpawnBulletPointAndDirection
+    {
+        public Transform spawnPoint;
+        public Transform direction;
+    }
 
-public enum EntityState
-{
-    Alive,
-    Die
+    [Serializable]
+    protected class EntityData
+    {
+        public int health;
+        public int damage;
+        public float bulletSpeed;
+        public float attackSpeed;
+        public float moveSpeed;
+        public float deSpawnTime;
+    }
+
+    protected enum EntityState
+    {
+        Alive,
+        Die
+    }
 }

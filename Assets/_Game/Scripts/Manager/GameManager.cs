@@ -11,20 +11,26 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameState gameState;
 
-    private void Start()
+    private void Awake()
     {
-        // ChangeState(GameState.MainMenu);
-        // TEST
-        // ChangeState(GameState.InGame);
+        // Input.multiTouchEnabled = false;
+        // Application.targetFrameRate = 60;
+        // Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        // const int maxScreenHeight = 1280;
+        // float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
+        // if (Screen.currentResolution.height > maxScreenHeight)
+        // {
+        //     Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+        // }
     }
 
-    public void ChangeState(GameState gameState)
+    public void ChangeState(GameState gameStateI)
     {
-        this.gameState = gameState;
+        gameState = gameStateI;
     }
 
-    public bool IsState(GameState gameState)
+    public bool IsState(GameState gameStateI)
     {
-        return this.gameState == gameState;
+        return gameState == gameStateI;
     }
 }

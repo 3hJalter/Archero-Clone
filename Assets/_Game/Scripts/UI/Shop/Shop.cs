@@ -27,6 +27,7 @@ public class Shop : UICanvas
 
     private void OnEnable()
     {
+        coinTxt.text = GameData.Ins.PlayerData.coin.ToString();
         currentShopBar = shopBarList[(int)ShopType.Weapon];
         currentShopBar.OnSelect();
     }

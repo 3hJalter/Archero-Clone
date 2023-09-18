@@ -9,4 +9,5 @@ public class EntityPrimitiveData : ScriptableObject
     public float attackSpeed;
     public float moveSpeed;
     public float deSpawnTime;
+    public int coin;
 }

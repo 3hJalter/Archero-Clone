@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3931b7c5bbded3d42ba775bf7d54cabd, type: 3}
   m_Name: LevelData
   m_EditorClassIdentifier: 
-  levelList:
-  - {fileID: 2741840780566982618, guid: c371ac3a31d82274bbed1f2a5058b6a2, type: 3}
-  - {fileID: 2741840780566982618, guid: 4db6fc2c24037e545bea42bf15386c91, type: 3}
-  - {fileID: 6634102680068589988, guid: daad365634779a3428ae313fffcf0ec7, type: 3}
   stageList:
   - stageName: 0
     isPassed: 1
     levelList:
-    - {fileID: 2741840780566982618, guid: c371ac3a31d82274bbed1f2a5058b6a2, type: 3}
     - {fileID: 2741840780566982618, guid: 4db6fc2c24037e545bea42bf15386c91, type: 3}
+    - {fileID: 2741840780566982618, guid: c371ac3a31d82274bbed1f2a5058b6a2, type: 3}
     - {fileID: 6634102680068589988, guid: daad365634779a3428ae313fffcf0ec7, type: 3}
   - stageName: 1
     isPassed: 0

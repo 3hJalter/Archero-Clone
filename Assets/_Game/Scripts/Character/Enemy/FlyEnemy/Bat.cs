@@ -22,7 +22,7 @@ public class Bat : FlyEnemy
             if (isNearPlayer)
             {
                 ChangeAnim(Constants.ANIM_ATTACK);
-                player.OnHit(entityData.damage);
+                playerTrigger.OnHit(entityData.damage);
 
             }
 

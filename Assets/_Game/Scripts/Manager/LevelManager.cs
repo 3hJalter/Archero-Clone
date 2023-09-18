@@ -5,15 +5,21 @@ public class LevelManager : Singleton<LevelManager>
 {
     public LevelData levelData;
     public Player player;
-    [SerializeField] private Level _currentLevel;
-    [SerializeField] private Stage currentStage;
+    [SerializeField] private CoinSpawner coinSpawner;
     [SerializeField] private int stageIndex;
     [SerializeField] private int levelIndex;
+    [SerializeField] private int coinInLevel;
+    [SerializeField] public int totalCoinGet;
+    
 
     [SerializeField] private List<Enemy> enemyList = new();
 
+    private Level _currentLevel;
+    public int CoinInLevel => coinInLevel;
+
     private void Start()
     {
+        coinInLevel = 0;
         levelIndex = PlayerPrefs.GetInt(Constants.LEVEL, 0);
         stageIndex = PlayerPrefs.GetInt(Constants.STAGE, 0);
         // COMMENT FOR TEST
@@ -27,6 +33,7 @@ public class LevelManager : Singleton<LevelManager>
         //set vi tri player
         player.Tf.position = _currentLevel.PlayerSpawnPoint.position;
         player.OnInit();
+        coinSpawner.CollectCoin();
     }
 
     private void OnSpawnEnemy()
@@ -44,10 +51,14 @@ public class LevelManager : Singleton<LevelManager>
         enemyList.Remove(enemy);
     }
 
-    public void OnEnemyDeath(Enemy enemy)
+    public void OnEnemyDeath(Enemy enemy, int coin)
     {
         enemyList.Remove(enemy);
-        if (enemyList.Count == 0) OnFinishLevel();
+        coinInLevel += coin;
+        // Spawn coin
+        coinSpawner.SpawnCoin(enemy.Tf.position, coin);
+        //
+        if (enemyList.Count == 0) Invoke(nameof(OnFinishLevel), 1f);
     }
 
     public Enemy GetNearestEnemy()
@@ -67,7 +78,7 @@ public class LevelManager : Singleton<LevelManager>
         return enemy;
     }
 
-    public void OnPlayerDeath()
+    public static void OnPlayerDeath()
     {
         UIManager.Ins.OpenUI<Revive>().OnInit();
     }
@@ -80,24 +91,24 @@ public class LevelManager : Singleton<LevelManager>
             enemyList.Clear();
             Destroy(_currentLevel.gameObject);
         }
-        
+
         if (stageIndex >= levelData.stageList.Count)
             ResetStageData();
-        
+
         if (levelIndex >= levelData.stageList[stageIndex].CountLevel())
         {
             stageIndex++;
             if (stageIndex >= levelData.stageList.Count) ResetStageData();
             else ResetLevelData();
         }
-        
+
         // if (levelIndex >= levelData.levelList.Count)
         // {
         //     levelIndex = 0;
         //     PlayerPrefs.SetInt(Constants.LEVEL, level);
         // }
         // _currentLevel = Instantiate(levelData.levelList[levelIndex]);
-        
+
         _currentLevel = Instantiate(levelData.stageList[stageIndex].GetLevel(levelIndex));
         _currentLevel.OnInit();
         OnSpawnEnemy();
@@ -108,14 +119,14 @@ public class LevelManager : Singleton<LevelManager>
         OnSpawnEnemy();
     }
 
-    public void OnStartGame()
+    public static void OnStartGame()
     {
         GameManager.Ins.ChangeState(GameState.InGame);
     }
 
     private void OnFinishLevel()
     {
-        _currentLevel.OpenDoor();
+        coinSpawner.MoveCoinToPlayer(player, _currentLevel);
     }
 
     private void OnReset()
@@ -123,6 +134,7 @@ public class LevelManager : Singleton<LevelManager>
         player.CancelAttack();
         SimplePool.CollectAll();
         enemyList.Clear();
+        coinInLevel = 0;
     }
 
     internal void OnResetStage()
@@ -130,7 +142,15 @@ public class LevelManager : Singleton<LevelManager>
         ResetLevelData();
         LoadLevel();
         OnInit();
+        coinInLevel = 0;
+        totalCoinGet = 0;
         UIManager.Ins.OpenUI<MainMenu>();
+    }
+
+    internal void OnOutStage()
+    {
+        GameData.Ins.PlayerData.coin += totalCoinGet;
+        OnResetStage();
     }
     
     internal void OnRetry()
@@ -155,11 +175,22 @@ public class LevelManager : Singleton<LevelManager>
             stageIndex++;
             if (stageIndex >= levelData.stageList.Count) ResetStageData();
             else ResetLevelData();
-        } else SaveStage();
+        }
+        else
+        {
+            SaveStage();
+        }
+
         // PlayerPrefs.SetInt(Constants.LEVEL, levelIndex);
         OnReset();
         LoadLevel();
         player.Tf.position = _currentLevel.PlayerSpawnPoint.position;
+    }
+
+    internal void AddTotalCoin()
+    {
+       totalCoinGet += coinInLevel;
+       coinInLevel = 0;
     }
     
     private void SaveStage()
@@ -170,7 +201,6 @@ public class LevelManager : Singleton<LevelManager>
 
     private void ResetStageData()
     {
-        stageIndex = levelIndex = 0;
         PlayerPrefs.SetInt(Constants.STAGE, 0);
         PlayerPrefs.SetInt(Constants.LEVEL, 0);
     }

@@ -9,7 +9,7 @@ public class BossSpider : GroundEnemy
 {
     [SerializeField] private Bullet bullet;
     [SerializeField] private Transform spawnPointLocate;
-    [SerializeField] private List<SpawnPointAndDirection> spawnPoints;
+    [SerializeField] private List<SpawnBulletPointAndDirection> spawnPoints;
     [SerializeField] private Canvas healthCanvas;
     [SerializeField] private int maxRollingNumber;
     [SerializeField] private SpriteRenderer fallViewPoint;
@@ -21,12 +21,10 @@ public class BossSpider : GroundEnemy
     private bool _isAttackDone;
     private bool _isJumpOne;
 
-    private Transform _playerTf;
 
     public override void OnInit()
     {
         base.OnInit();
-        _playerTf = LevelManager.Ins.player.Tf;
         ChangePhase(EnemyPhase.Phase1, AttackState, 35);
         healthCanvas.worldCamera = CameraFollower.Ins.GetCamera(CameraState.InGame);
     }
@@ -91,9 +89,9 @@ public class BossSpider : GroundEnemy
         {
             _currentRollingNumber -= 1;
             ChangeAnimWithOutCheckCurrent(Constants.ANIM_ROLL);
-            Utilities.LookTarget(skin.Tf, _playerTf);
+            Utilities.LookTarget(skin.Tf, playerTf);
             Vector3 position = Tf.position;
-            Vector3 direction = (_playerTf.position - position).normalized;
+            Vector3 direction = (playerTf.position - position).normalized;
             Vector3 sampleDestination = position + direction * 30f;
             if (NavMesh.SamplePosition(sampleDestination, out NavMeshHit hit, 30f, NavMesh.AllAreas))
                 NavMeshAgent.SetDestination(hit.position - direction * 4.5f);
@@ -102,6 +100,7 @@ public class BossSpider : GroundEnemy
         onExecute = Execute;
         onExit = () => { };
         return;
+
         void Execute()
         {
             if (!IsReachDestination()) return;
@@ -121,7 +120,7 @@ public class BossSpider : GroundEnemy
             for (int i = 0; i < collisionColliders.Count; i++)
                 collisionColliders[i].enabled = false;
             LevelManager.Ins.OnRemoveEnemy(this);
-            NavMeshAgent.SetDestination(_playerTf.position);
+            NavMeshAgent.SetDestination(playerTf.position);
             fallViewPoint.enabled = true;
         };
         onExecute = () => Utilities.DoAfterSeconds(ref jumpTime, Execute);
@@ -165,12 +164,13 @@ public class BossSpider : GroundEnemy
             _isAttack = true;
             _isAttackDone = false;
             ChangeAnim(Constants.ANIM_ATTACK);
-            Utilities.LookTarget(skin.Tf, _playerTf);
+            Utilities.LookTarget(skin.Tf, playerTf);
             StartCoroutine(FireMultiple(entityData.damage, entityData.bulletSpeed, 5));
         };
         onExecute = Execute;
         onExit = () => { };
         return;
+
         void Execute()
         {
             if (!IsDie() && _isAttackDone) StateMachine.ChangeState(IdleState);
@@ -184,7 +184,7 @@ public class BossSpider : GroundEnemy
             _isAttack = true;
             _isAttackDone = false;
             ChangeAnim(Constants.ANIM_ATTACK);
-            Utilities.LookTarget(skin.Tf, _playerTf);
+            Utilities.LookTarget(skin.Tf, playerTf);
             const int shotNums = 10;
             const float timePerShoot = 0.2f;
             spawnPointLocate.transform.DOLocalRotate(new Vector3(0, 360, 0), shotNums * timePerShoot,
@@ -195,6 +195,7 @@ public class BossSpider : GroundEnemy
         onExecute = Execute;
         onExit = () => { };
         return;
+
         void Execute()
         {
             if (!IsDie() && _isAttackDone)
@@ -220,16 +221,8 @@ public class BossSpider : GroundEnemy
 
     private void OnFire(int damageIn, float bulletSpeedIn)
     {
-        foreach (SpawnPointAndDirection spawnPointIn in spawnPoints)
-            FireOne(damageIn, bulletSpeedIn, spawnPointIn);
-    }
-
-    private void FireOne(int damageIn, float bulletSpeedIn, SpawnPointAndDirection spawnPointIn)
-    {
-        Vector3 position = spawnPointIn.spawnPoint.position;
-        Vector3 direction = spawnPointIn.direction.position;
-        SimplePool.Spawn<Bullet>(bullet, position, Quaternion.identity)
-            .OnInit(position, direction, bulletSpeedIn, damageIn, 0f);
+        foreach (SpawnBulletPointAndDirection spawnPointIn in spawnPoints)
+            FireWithDirection(bullet, damageIn, bulletSpeedIn, spawnPointIn);
     }
 
     private IEnumerator FireMultiple(int damageIn, float bulletSpeedIn, int fireNumber = 0,
@@ -243,19 +236,11 @@ public class BossSpider : GroundEnemy
 
         _isAttackDone = true;
     }
-}
 
-[Serializable]
-public class SpawnPointAndDirection
-{
-    public Transform spawnPoint;
-    public Transform direction;
-}
-
-
-public class BossPhase
-{
-    public StateMachine.StateAction attackAction;
-    public int chanceToAttack;
-    public EnemyPhase EnemyPhase;
+    private class BossPhase
+    {
+        public StateMachine.StateAction attackAction;
+        public int chanceToAttack;
+        public EnemyPhase EnemyPhase;
+    }
 }

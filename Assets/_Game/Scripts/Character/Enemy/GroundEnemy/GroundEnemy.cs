@@ -22,7 +22,7 @@ public class GroundEnemy : Enemy
             return;
         }
 
-        if (player != null && !player.IsDie())
+        if (playerTrigger != null && !playerTrigger.IsDie())
         {
             HitPlayerAgain();
         }
@@ -36,7 +36,7 @@ public class GroundEnemy : Enemy
         if (timeHitPlayerAgain > 0) timeHitPlayerAgain -= Time.deltaTime;
         else
         {
-            player.OnHit(entityData.damage);
+            playerTrigger.OnHit(entityData.damage);
             ResetTimeHit();
         }
     }

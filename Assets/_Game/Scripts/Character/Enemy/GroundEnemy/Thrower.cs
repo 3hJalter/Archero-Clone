@@ -28,7 +28,6 @@ public class Thrower : GroundEnemy
     private void AttackState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         float attackTime = 0f;
-        Entity playerT = LevelManager.Ins.player;
         onEnter = () =>
         {
             ChangeAnim(Constants.ANIM_ATTACK);
@@ -39,24 +38,23 @@ public class Thrower : GroundEnemy
         return;
         void Wait()
         {
-            Utilities.LookTarget(skin.Tf, playerT.Tf);
+            Utilities.LookTarget(skin.Tf, playerTf);
         }
         
         void Execute()
         {
             if (IsDie()) return;
-            OnFire(playerT, entityData.damage, entityData.bulletSpeed);
+            OnFireToTarget(playerTf, entityData.damage, entityData.bulletSpeed);
             StateMachine.ChangeState(IdleState);
         }
     }
 
-    private void OnFire(Entity target, int damageIn, float bulletSpeedIn)
+    private void OnFireToTarget(Transform target, int damageIn, float bulletSpeedIn)
     {
         Vector3 position = spawnPoint.position;
-        Vector3 targetPosition = target.GetSkinPosition();
-        Bullet init = SimplePool.Spawn<Bullet>(bullet,
-            position, Quaternion.identity);
-        init.OnInit(position, targetPosition, bulletSpeedIn, damageIn, 0.75f);
+        Vector3 targetPosition = target.position;
+        SimplePool.Spawn<Bullet>(bullet, position, Quaternion.identity)
+            .OnInit(position, targetPosition, bulletSpeedIn, damageIn, 0.75f);
     }
     
 }

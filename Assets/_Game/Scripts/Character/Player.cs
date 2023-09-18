@@ -8,6 +8,7 @@ public class Player : Entity, IInteractWallObject
     [Title("Player Component")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Enemy target;
+    [SerializeField] private Transform spawnBulletPoint;
     [SerializeField] private PlayerCustomize playerCustomize;
     private Vector2 _input;
     private PlayerSkin _pSkin;
@@ -54,14 +55,8 @@ public class Player : Entity, IInteractWallObject
     public void OnEquipItem()
     {
         OnEquipWeapon(GameData.Ins.PlayerData.WeaponType);
-        playerCustomize.weapon.SetOwner(this);
         OnEquipHat(GameData.Ins.PlayerData.HatType);
         OnEquipPant(GameData.Ins.PlayerData.PantType);
-    }
-
-    public void OnFinishGame()
-    {
-        // LevelManager.Ins.OnWin();
     }
 
     private static Vector2 GetInputAxis()
@@ -84,13 +79,9 @@ public class Player : Entity, IInteractWallObject
             Quaternion targetRos = Quaternion.LookRotation(movement);
             skin.Tf.rotation = Quaternion.Slerp(skin.Tf.rotation, targetRos, 10f * Time.deltaTime);
         }
-        
-        // Move by rigidbody velocity
         rb.velocity = movement * (entityData.moveSpeed * Time.deltaTime);
-        
-        // Tf.position += movement * (entityData.moveSpeed * Time.deltaTime);
         ChangeAnim(Constants.ANIM_RUN);
-        SetCanAttack(true);
+        CanAttack = true;
     }
     
     private void OnStop()
@@ -114,14 +105,14 @@ public class Player : Entity, IInteractWallObject
 
     protected override void DeSpawn()
     {
-        LevelManager.Ins.OnPlayerDeath();
+        LevelManager.OnPlayerDeath();
         gameObject.SetActive(false);
     }
 
     private void FireBullet()
     {
         if (Constants.ANIM_ATTACK != CurrentAnim) return;
-        playerCustomize.weapon.OnFire(target, entityData.damage, entityData.bulletSpeed);
+        playerCustomize.weapon.OnFireToTarget(spawnBulletPoint, target, entityData.damage, entityData.bulletSpeed);
         ChangeAnim(Constants.ANIM_IDLE);
         CanAttack = true;
     }
@@ -144,6 +135,13 @@ public class Player : Entity, IInteractWallObject
         playerCustomize.pant = _pSkin.OnEquipPantFromData(pantType);
     }
 
+    public void CancelAttack()
+    {
+        if (IsCancelAttack) return;
+        CancelInvoke();
+        IsCancelAttack = true;
+    }
+    
     // private void UpgradeSkill(Skill skill)
     // {
     //     if (!SkillDic.ContainsKey(skill.SkillType))
@@ -158,12 +156,12 @@ public class Player : Entity, IInteractWallObject
     // }
     public void OnHitWall()
     { }
-}
-
-[Serializable]
-public class PlayerCustomize
-{
-    public Weapon weapon;
-    public Hat hat;
-    public Material pant;
+    
+    [Serializable]
+    private class PlayerCustomize
+    {
+        public Weapon weapon;
+        public Hat hat;
+        public Material pant;
+    }
 }

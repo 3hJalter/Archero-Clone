@@ -6,7 +6,9 @@ public class BulletTrajectory : Bullet
         float offsetY)
     {
         base.OnInit(initPos, targetInput, velocityScaleIn, damageIn, offsetY);
-        Tf.DOJump(targetPos - Vector3.down * 0.5f, velocityScale, 1, 1f).OnComplete(OnReachDestination);
+        Tf.DOJump(targetPos - Vector3.down * 0.5f, velocityScale, 1, 1f)
+            .SetEase(Ease.Linear)
+            .OnComplete(OnReachDestination);
     }
 
     protected override void OnReachDestination()

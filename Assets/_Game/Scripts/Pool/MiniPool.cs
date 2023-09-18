@@ -8,6 +8,11 @@ public class MiniPool<T> where T : Component
     private Transform _parent;
     private T _prefab;
 
+    public List<T> GetActiveList()
+    {
+        return _listActives;
+    }
+    
     public void OnInit(T prefab, int amount, Transform parent = null)
     {
         _prefab = prefab;
@@ -46,16 +51,16 @@ public class MiniPool<T> where T : Component
         return go;
     }
 
-    public void Despawn(T obj)
+    public void Despawn(T obj, bool isCollect = false)
     {
         if (!obj.gameObject.activeSelf) return;
         obj.gameObject.SetActive(false);
-        if (_index > 0) _index--;
+        if (_index > 0 && !isCollect) _index--;
     }
 
     public void Collect()
     {
-        for (int i = 0; i < _index; i++) Despawn(_listActives[i]);
+        for (int i = 0; i < _index; i++) Despawn(_listActives[i], true);
         _index = 0;
     }
 

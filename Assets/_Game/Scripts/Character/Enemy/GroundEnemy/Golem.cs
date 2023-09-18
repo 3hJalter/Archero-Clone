@@ -5,8 +5,7 @@ using UnityEngine;
 public class Golem : GroundEnemy
 {
     [SerializeField] private Bullet bullet;
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private List<Transform> additionalSpawnPoints;
+    [SerializeField] private List<SpawnBulletPointAndDirection> spawnPoints;
 
     protected override void IdleState(out Action onEnter, out Action onExecute, out Action onExit)
     {
@@ -25,7 +24,7 @@ public class Golem : GroundEnemy
             }
             else
             {
-                if (Utilities.Chance(30)) StateMachine.ChangeState(PatrolState);
+                if (Utilities.Chance(50)) StateMachine.ChangeState(PatrolState);
                 else StateMachine.ChangeState(AttackState);
             }
         };
@@ -35,21 +34,27 @@ public class Golem : GroundEnemy
 
     private void PatrolState(out Action onEnter, out Action onExecute, out Action onExit)
     {
+        float timePatrol = 0f;
         onEnter = () =>
         {
+            timePatrol = 1f;
             ChangeAnim(Constants.ANIM_RUN);
-            Vector3 position = Tf.position;
-            Vector3 destination = (LevelManager.Ins.player.Tf.position - position).normalized * 2f + position;
-            Utilities.LookTarget(skin.Tf, destination);
-            NavMeshAgent.SetDestination(destination);
+            NavMeshAgent.SetDestination(playerTf.position);
         };
-        onExecute = Execute;
+        onExecute = () => Utilities.DoAfterSeconds(ref timePatrol, Execute, Wait);
         onExit = () => { };
         return;
 
+        void Wait()
+        {
+            // Rotate the skin to the path of navmesh
+            if (NavMeshAgent.velocity.normalized == Vector3.zero) return;
+            skin.Tf.rotation = Quaternion.LookRotation(NavMeshAgent.velocity.normalized);
+        }
+
         void Execute()
         {
-            if (!IsReachDestination()) return;
+            NavMeshAgent.ResetPath();
             StateMachine.ChangeState(AttackState);
         }
     }
@@ -57,10 +62,11 @@ public class Golem : GroundEnemy
     private void AttackState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         float attackTime = 0f;
-        Entity playerT = LevelManager.Ins.player;
         onEnter = () =>
         {
+            Utilities.LookTarget(skin.Tf, playerTf);
             ChangeAnim(Constants.ANIM_ATTACK);
+            skin.ResetBodyRotation();
             attackTime = 0.75f;
         };
         onExecute = () => Utilities.DoAfterSeconds(ref attackTime, Execute, Wait);
@@ -69,35 +75,21 @@ public class Golem : GroundEnemy
 
         void Wait()
         {
-            skin.Tf.LookAt(playerT.Tf);
+            Utilities.LookTarget(skin.Tf, playerTf);
         }
 
         void Execute()
         {
             if (IsDie()) return;
-            OnFire(playerT, entityData.damage, entityData.bulletSpeed);
+            OnFire(entityData.damage, entityData.bulletSpeed);
             StateMachine.ChangeState(IdleState);
         }
     }
 
-    private void OnFire(HMonoBehaviour target, int damageIn, float bulletSpeedIn)
+
+    private void OnFire(int damageIn, float bulletSpeedIn)
     {
-        Fire(spawnPoint);
-        foreach (Transform spawnPointIn in additionalSpawnPoints) Fire(spawnPointIn);
-
-        return;
-
-        void Fire(Transform spawnPointIn)
-        {
-            Vector3 position = spawnPointIn.position;
-            Bullet init = SimplePool.Spawn<Bullet>(bullet,
-                position, Quaternion.identity);
-            // TEST
-            Vector3 localPosition = spawnPointIn.localPosition;
-            Vector3 newTargetPos = new(localPosition.x, localPosition.y, localPosition.z + 10f);
-            newTargetPos = spawnPointIn.TransformPoint(newTargetPos);
-            newTargetPos = new Vector3(newTargetPos.x, target.Tf.position.y, newTargetPos.z);
-            init.OnInit(position, newTargetPos, bulletSpeedIn, damageIn, 0.75f);
-        }
+        foreach (SpawnBulletPointAndDirection spawnPointIn in spawnPoints)
+            FireWithDirection(bullet, damageIn, bulletSpeedIn, spawnPointIn);
     }
 }

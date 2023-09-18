@@ -10,23 +10,21 @@ public class Enemy : Entity
     protected readonly StateMachine StateMachine = new();
     private bool _isInCameraView;
 
-    protected MiniPool<Bullet> bulletPool = new();
-
-    protected Player player;
-
+    protected Player playerTrigger;
+    protected Transform playerTf;
     protected float timeHitPlayerAgain = 1f;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag(Constants.TAG_PLAYER)) return;
-        player = Cache.GetPlayer(other);
+        playerTrigger = Cache.GetPlayer(other);
         isNearPlayer = true;
-        player.OnHit(entityData.damage);
+        playerTrigger.OnHit(entityData.damage);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        player = null;
+        playerTrigger = null;
         isNearPlayer = false;
         ResetTimeHit();
     }
@@ -34,8 +32,11 @@ public class Enemy : Entity
     public override void OnInit()
     {
         base.OnInit();
+        isNearPlayer = false;
+        playerTrigger = null;
         StateMachine.ChangeState(IdleState);
         LevelManager.Ins.OnAddEnemy(this);
+        playerTf = LevelManager.Ins.player.Tf;
     }
 
     protected void ResetTimeHit(float timeHit = 1f)
@@ -53,13 +54,16 @@ public class Enemy : Entity
     protected override void OnDie()
     {
         base.OnDie();
-        LevelManager.Ins.OnEnemyDeath(this);
+        LevelManager.Ins.OnEnemyDeath(this, entityPrimitiveData.coin);
     }
 
-
-    protected virtual Vector3 GetRandomPoint()
+    protected static void FireWithDirection(Bullet bulletPrefab, int damageIn, float bulletSpeedIn,
+        SpawnBulletPointAndDirection spawnPointIn, float offsetY = 0f)
     {
-        return Vector3.zero;
+        Vector3 position = spawnPointIn.spawnPoint.position;
+        Vector3 direction = spawnPointIn.direction.position;
+        SimplePool.Spawn<Bullet>(bulletPrefab, position, Quaternion.identity)
+            .OnInit(position, direction, bulletSpeedIn, damageIn, offsetY);
     }
 
     protected override void DeSpawn()
