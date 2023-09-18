@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f6a18ef1fe2614a884040b5ba457bf, type: 3}
   m_Name: BossSpider
   m_EditorClassIdentifier: 
-  health: 700
+  health: 500
   damage: 7
   bulletSpeed: 35
   attackSpeed: 5

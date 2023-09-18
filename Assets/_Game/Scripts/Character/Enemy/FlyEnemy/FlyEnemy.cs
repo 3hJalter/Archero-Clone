@@ -19,6 +19,7 @@ public class FlyEnemy : Enemy
 
     protected bool IsReachDestination()
     {
-        return !(Vector3.Distance(Tf.position, destination) > 0.2f);
+        return (Tf.position - destination).sqrMagnitude < 0.4f;
+        // return !(Vector3.Distance(Tf.position, destination) > 0.2f);
     }
 }

@@ -53,7 +53,7 @@ public class Bullet : GameUnit, IInteractWallObject
     private bool IsHitEnemy(out RaycastHit outHit)
     {
         return Physics.SphereCast(Tf.position, 0.5f,
-            (targetPos - _currentPos).normalized, out outHit, 0.5f, targetLayer);
+            (targetPos - _currentPos).normalized, out outHit, 1f, targetLayer);
     }
 
     private void OnHitTarget()

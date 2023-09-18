@@ -1,15 +1,15 @@
 ﻿public enum CameraState
 {
-    MainMenu,
-    InGame,
-    Shop,
+    MainMenu = 0,
+    InGame = 1,
+    Shop = 2,
 }
 
 public enum LevelType
 {
-    Tutorial,
-    Normal,
-    Boss,
+    Tutorial = 0,
+    Normal = 1,
+    Boss = 2,
 }
 
 public enum EnemyType
@@ -69,10 +69,6 @@ public enum WeaponType
     Knife = PoolType.Knife,
     Uzi = PoolType.Uzi,
     Z = PoolType.Z,
-    
-    // REMOVE BELOW
-    Bow = PoolType.Bow,
-    Gun = PoolType.Gun,
 }
 
 
@@ -125,7 +121,13 @@ public enum SkillLevel
     Three = 3
 }
 
-public enum Phase
+public enum StageName
+{
+    Stage0 = 0,
+    Stage1 = 1,
+}
+
+public enum EnemyPhase
 {
     Phase1 = 0,
     Phase2 = 1,

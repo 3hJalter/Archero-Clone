@@ -27,6 +27,20 @@ public static class Utilities
         owner.rotation = Quaternion.Euler(0, owner.rotation.eulerAngles.y, 0);
     }
     
+    public static void DoAfterSeconds(ref float time, Action action, Action onWait = null)
+    {
+        if (time > 0)
+        {
+            time -= Time.deltaTime;
+            onWait?.Invoke();
+        }
+        else
+        {
+            action();
+            time = 0;
+        }
+    }
+    
     public static bool CheckTime(ref float time){
         if (time > 0) time -= Time.deltaTime;
         else return true;

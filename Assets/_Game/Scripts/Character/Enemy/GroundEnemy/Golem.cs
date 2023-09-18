@@ -6,7 +6,8 @@ public class Golem : GroundEnemy
 {
     [SerializeField] private Bullet bullet;
     [SerializeField] private Transform spawnPoint;
-    
+    [SerializeField] private List<Transform> additionalSpawnPoints;
+
     protected override void IdleState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         float timeWait = 0f;
@@ -18,9 +19,13 @@ public class Golem : GroundEnemy
 
         onExecute = () =>
         {
-            if (timeWait > 0) timeWait -= Time.deltaTime;
+            if (timeWait > 0)
+            {
+                timeWait -= Time.deltaTime;
+            }
             else
-            {   if (Utilities.Chance(30)) StateMachine.ChangeState(PatrolState);
+            {
+                if (Utilities.Chance(30)) StateMachine.ChangeState(PatrolState);
                 else StateMachine.ChangeState(AttackState);
             }
         };
@@ -38,12 +43,15 @@ public class Golem : GroundEnemy
             Utilities.LookTarget(skin.Tf, destination);
             NavMeshAgent.SetDestination(destination);
         };
-        onExecute = () =>
+        onExecute = Execute;
+        onExit = () => { };
+        return;
+
+        void Execute()
         {
             if (!IsReachDestination()) return;
             StateMachine.ChangeState(AttackState);
-        };
-        onExit = () => { };
+        }
     }
 
     private void AttackState(out Action onEnter, out Action onExecute, out Action onExit)
@@ -52,30 +60,33 @@ public class Golem : GroundEnemy
         Entity playerT = LevelManager.Ins.player;
         onEnter = () =>
         {
-            Debug.Log("Start Attack");
             ChangeAnim(Constants.ANIM_ATTACK);
             attackTime = 0.75f;
         };
-        onExecute = () =>
-        {
-            if (attackTime > 0)
-            {
-                skin.Tf.LookAt(playerT.Tf);
-                attackTime -= Time.deltaTime;
-            }
-            else if (!IsDie())
-            {
-                OnFire(playerT, entityData.damage, entityData.bulletSpeed);
-                StateMachine.ChangeState(IdleState);
-            }
-        };
+        onExecute = () => Utilities.DoAfterSeconds(ref attackTime, Execute, Wait);
         onExit = () => { };
+        return;
+
+        void Wait()
+        {
+            skin.Tf.LookAt(playerT.Tf);
+        }
+
+        void Execute()
+        {
+            if (IsDie()) return;
+            OnFire(playerT, entityData.damage, entityData.bulletSpeed);
+            StateMachine.ChangeState(IdleState);
+        }
     }
 
-    [SerializeField] private List<Transform> additionalSpawnPoints;
-    
-    private void OnFire(Entity target, int damageIn, float bulletSpeedIn)
+    private void OnFire(HMonoBehaviour target, int damageIn, float bulletSpeedIn)
     {
+        Fire(spawnPoint);
+        foreach (Transform spawnPointIn in additionalSpawnPoints) Fire(spawnPointIn);
+
+        return;
+
         void Fire(Transform spawnPointIn)
         {
             Vector3 position = spawnPointIn.position;
@@ -88,11 +99,5 @@ public class Golem : GroundEnemy
             newTargetPos = new Vector3(newTargetPos.x, target.Tf.position.y, newTargetPos.z);
             init.OnInit(position, newTargetPos, bulletSpeedIn, damageIn, 0.75f);
         }
-        Fire(spawnPoint);
-        foreach (Transform spawnPointIn in additionalSpawnPoints)
-        {
-            Fire(spawnPointIn);
-        }
     }
-    
 }

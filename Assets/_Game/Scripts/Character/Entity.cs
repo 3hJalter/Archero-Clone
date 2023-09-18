@@ -44,7 +44,8 @@ public abstract class Entity : GameUnit
     public virtual void OnInit()
     {
         GetPrimitiveData();
-        healthBar.OnChangeHealthBar();
+        healthBar.OnInit();
+        skin.OnInit();
         entityCollider.enabled = true;
         entityState = EntityState.Alive;
     }

@@ -40,7 +40,13 @@ public class GroundEnemy : Enemy
             ResetTimeHit();
         }
     }
-    
+
+    protected override void OnDie()
+    {
+        base.OnDie();
+        NavMeshAgent.isStopped = true;
+    }
+
     protected bool IsReachDestination()
     {
         if (!(navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)) return false;

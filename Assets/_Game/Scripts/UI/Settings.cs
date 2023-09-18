@@ -32,7 +32,7 @@ public class Settings : UICanvas
     {
         GameManager.Ins.ChangeState(GameState.MainMenu);
         CameraFollower.Ins.ChangeState(CameraState.MainMenu);
-        LevelManager.Ins.OnRetry();
+        LevelManager.Ins.OnResetStage();
         Close();
     }
     

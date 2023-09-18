@@ -10,24 +10,12 @@ public class Enemy : Entity
     protected readonly StateMachine StateMachine = new();
     private bool _isInCameraView;
 
-    protected Player player;
-    
     protected MiniPool<Bullet> bulletPool = new();
-    
-    public override void OnInit()
-    {
-        base.OnInit();
-        StateMachine.ChangeState(IdleState);
-        LevelManager.Ins.OnAddEnemy(this);
-    }
+
+    protected Player player;
 
     protected float timeHitPlayerAgain = 1f;
 
-    protected void ResetTimeHit(float timeHit = 1f)
-    {
-        timeHitPlayerAgain = timeHit;
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag(Constants.TAG_PLAYER)) return;
@@ -43,11 +31,40 @@ public class Enemy : Entity
         ResetTimeHit();
     }
 
+    public override void OnInit()
+    {
+        base.OnInit();
+        StateMachine.ChangeState(IdleState);
+        LevelManager.Ins.OnAddEnemy(this);
+    }
+
+    protected void ResetTimeHit(float timeHit = 1f)
+    {
+        timeHitPlayerAgain = timeHit;
+    }
+
     protected virtual void IdleState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         onEnter = () => { };
         onExecute = () => { };
         onExit = () => { };
+    }
+
+    protected override void OnDie()
+    {
+        base.OnDie();
+        LevelManager.Ins.OnEnemyDeath(this);
+    }
+
+
+    protected virtual Vector3 GetRandomPoint()
+    {
+        return Vector3.zero;
+    }
+
+    protected override void DeSpawn()
+    {
+        SimplePool.Despawn(this);
     }
     
     // protected void CheckEnemyInView()
@@ -65,18 +82,4 @@ public class Enemy : Entity
     //             break;
     //     }
     // }
-
-    protected override void OnDie()
-    {
-        base.OnDie();
-        LevelManager.Ins.OnEnemyDeath(this);
-    }
-
-
-    protected virtual Vector3 GetRandomPoint() {return Vector3.zero;}
-
-    protected override void DeSpawn()
-    {
-        SimplePool.Despawn(this);
-    }
 }

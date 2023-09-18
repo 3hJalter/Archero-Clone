@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 465809548}
   entity: {fileID: 547792074}
+  healthTextPrefab: {fileID: 8245896810154226155, guid: 30f7612d75671c44792c1ea336a7d1dc, type: 3}
 --- !u!1 &12471470
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +415,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 202924627}
-  - component: {fileID: 202924628}
+  - component: {fileID: 202924629}
   m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
@@ -430,7 +431,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202924626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -439,7 +440,7 @@ Transform:
   m_Father: {fileID: 547792073}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &202924628
+--- !u!114 &202924629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -448,9 +449,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 202924626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71592a43f5de8c84bb2829868120fbbd, type: 3}
+  m_Script: {fileID: 11500000, guid: b3bf3a31b81a4d6d86f0eeb27809dec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allBody: {fileID: 7038994019603733711}
   head: {fileID: 984246147371268664}
   rightHand: {fileID: 8618222221678779308}
   pant: {fileID: 6661607501681484892}
@@ -753,7 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 0
-  skin: {fileID: 202924628}
+  skin: {fileID: 202924629}
   anim: {fileID: 1091423645684789685}
   healthBar: {fileID: 230391}
   entityCollider: {fileID: 547792077}
@@ -769,9 +771,6 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
   rb: {fileID: 547792076}
   target: {fileID: 0}
   playerCustomize:
@@ -1323,6 +1322,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: 21da4e9ede30fc646bb50a45d20e16a9, type: 2}
   player: {fileID: 547792074}
+  _currentLevel: {fileID: 0}
+  currentStage:
+    stageName: 0
+    isPassed: 0
+    levelList: []
+  stageIndex: 0
   levelIndex: 0
   enemyList: []
 --- !u!1 &1732303320
@@ -1460,8 +1465,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 5c30aedd956cd3442afae9403b1a2a77, type: 2}
   shopData: {fileID: 11400000, guid: 8817badcfd7c2e84e8e8b21bac79b461, type: 2}
-  hatData: {fileID: 11400000, guid: 8851baa9cd24879478647f42e9c5397c, type: 2}
-  pantData: {fileID: 11400000, guid: 21009c052f7528441accf0d58b05feb9, type: 2}
 --- !u!4 &928191247257768607
 Transform:
   m_ObjectHideFlags: 0
@@ -1753,7 +1756,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6337934790360215260}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

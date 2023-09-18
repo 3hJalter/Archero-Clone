@@ -44,7 +44,7 @@ public class Revive : UICanvas
         GameManager.Ins.ChangeState(GameState.MainMenu);
         CameraFollower.Ins.ChangeState(CameraState.MainMenu);
         UIManager.Ins.CloseAll();
-        LevelManager.Ins.OnRetry();
+        LevelManager.Ins.OnResetStage();
     }
 
     public void ReviveButton()

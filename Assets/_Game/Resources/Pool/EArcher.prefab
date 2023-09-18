@@ -843,6 +843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 9051740311266313445}
   entity: {fileID: 9051740311153871426}
+  healthTextPrefab: {fileID: 0}
 --- !u!1 &9051740310717210060
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,6 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71592a43f5de8c84bb2829868120fbbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allBody: {fileID: 8796801828527983693}
   head: {fileID: 0}
   rightHand: {fileID: 0}
   pant: {fileID: 0}

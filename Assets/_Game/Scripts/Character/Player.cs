@@ -10,12 +10,13 @@ public class Player : Entity, IInteractWallObject
     [SerializeField] private Enemy target;
     [SerializeField] private PlayerCustomize playerCustomize;
     private Vector2 _input;
-
+    private PlayerSkin _pSkin;
     private void Start()
     {
+        _pSkin = (PlayerSkin) skin;
         OnEquipItem();
     }
-
+    
     private void FixedUpdate()
     {
         if (!GameManager.Ins.IsState(GameState.InGame)) return;
@@ -128,19 +129,19 @@ public class Player : Entity, IInteractWallObject
     public void OnEquipWeapon(WeaponType weaponType)
     {
         if (playerCustomize.weapon != null) Destroy(playerCustomize.weapon.gameObject);
-        playerCustomize.weapon = skin.OnEquipWeaponFromData(weaponType);
+        playerCustomize.weapon = _pSkin.OnEquipWeaponFromData(weaponType);
     }
 
     public void OnEquipHat(HatType hatType)
     {
         if (playerCustomize.hat != null) Destroy(playerCustomize.hat.gameObject);
-        playerCustomize.hat = skin.OnEquipHatFromData(hatType);
+        playerCustomize.hat = _pSkin.OnEquipHatFromData(hatType);
     }
 
     public void OnEquipPant(PantType pantType)
     {
         // playerCustomize.pant = null;
-        playerCustomize.pant = skin.OnEquipPantFromData(pantType);
+        playerCustomize.pant = _pSkin.OnEquipPantFromData(pantType);
     }
 
     // private void UpgradeSkill(Skill skill)

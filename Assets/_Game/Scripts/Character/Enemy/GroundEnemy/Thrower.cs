@@ -15,13 +15,14 @@ public class Thrower : GroundEnemy
             timeWait = 1.5f;
         };
 
-        onExecute = () =>
-        {
-            if (timeWait > 0) timeWait -= Time.deltaTime;
-            else StateMachine.ChangeState(AttackState);
-        };
+        onExecute = () => Utilities.DoAfterSeconds(ref timeWait, Execute);
 
         onExit = () => { };
+        return;
+        void Execute()
+        {
+            StateMachine.ChangeState(AttackState);
+        }
     }
 
     private void AttackState(out Action onEnter, out Action onExecute, out Action onExit)
@@ -33,21 +34,20 @@ public class Thrower : GroundEnemy
             ChangeAnim(Constants.ANIM_ATTACK);
             attackTime = 0.5f;
         };
-        onExecute = () =>
-        {
-            if (attackTime > 0)
-            {
-                Utilities.LookTarget(skin.Tf, playerT.Tf);
-                attackTime -= Time.deltaTime;
-            }
-            else if (!IsDie())
-            {
-                
-                OnFire(playerT, entityData.damage, entityData.bulletSpeed);
-                StateMachine.ChangeState(IdleState);
-            }
-        };
+        onExecute = () => Utilities.DoAfterSeconds(ref attackTime, Execute, Wait);
         onExit = () => { };
+        return;
+        void Wait()
+        {
+            Utilities.LookTarget(skin.Tf, playerT.Tf);
+        }
+        
+        void Execute()
+        {
+            if (IsDie()) return;
+            OnFire(playerT, entityData.damage, entityData.bulletSpeed);
+            StateMachine.ChangeState(IdleState);
+        }
     }
 
     private void OnFire(Entity target, int damageIn, float bulletSpeedIn)
@@ -56,7 +56,6 @@ public class Thrower : GroundEnemy
         Vector3 targetPosition = target.GetSkinPosition();
         Bullet init = SimplePool.Spawn<Bullet>(bullet,
             position, Quaternion.identity);
-        // TEST
         init.OnInit(position, targetPosition, bulletSpeedIn, damageIn, 0.75f);
     }
     

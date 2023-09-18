@@ -15,6 +15,7 @@ public abstract class Constants
     public const string TAG_PLAYER = "Player";
 
     // STRING
+    public const string STAGE = "Stage";
     public const string LEVEL = "Level";
 
     

@@ -11,28 +11,25 @@ public class Bat : FlyEnemy
             timeWait = 1f;
             ChangeAnim(Constants.ANIM_IDLE);
         };
-        
-        onExecute = () =>
-        { 
-            if (timeWait > 0) timeWait -= Time.deltaTime;
-            else
-            {
-                if (isNearPlayer)
-                {
-                    ChangeAnim(Constants.ANIM_ATTACK);
-                    player.OnHit(entityData.damage);
-                    
-                }
-                StateMachine.ChangeState(ChaseState);
-            }
-        };
-        
-        onExit = () =>
+
+        onExecute = () => Utilities.DoAfterSeconds(ref timeWait, Execute);
+
+        onExit = () => { };
+        return;
+
+        void Execute()
         {
-            
-        };
+            if (isNearPlayer)
+            {
+                ChangeAnim(Constants.ANIM_ATTACK);
+                player.OnHit(entityData.damage);
+
+            }
+
+            StateMachine.ChangeState(ChaseState);
+        }
     }
-    
+
     private void ChaseState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         Vector3 targetPos = LevelManager.Ins.player.Tf.position;
@@ -43,17 +40,19 @@ public class Bat : FlyEnemy
             Destination = new Vector3(targetPos.x, position.y, targetPos.z);
             direction = (Destination - position).normalized;
             Utilities.LookTarget(skin.Tf, Destination);
+            ChangeAnim(Constants.ANIM_RUN);
         };
-        
-        onExecute = () =>
-        { 
+
+        onExecute = Execute;
+
+        onExit = () => { };
+        return;
+
+        void Execute()
+        {
             if (IsReachDestination()) StateMachine.ChangeState(IdleState);
             else
-            {
                 Tf.position += direction * (entityData.moveSpeed * Time.deltaTime);
-            }
-        };
-        
-        onExit = () => { };
+        }
     }
 }
