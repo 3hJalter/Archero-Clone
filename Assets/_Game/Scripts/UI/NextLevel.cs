@@ -15,7 +15,7 @@ public class NextLevel : UICanvas
     public void OnInit()
     {
         panel.gameObject.SetActive(true);
-        GameManager.Ins.ChangeState(GameState.Pause);
+        GameManager.Ins.ChangeState(GameState.Transition);
         DOVirtual.Float(0,1, 0.5f, TransparentImage).OnComplete(
             () =>
             {

@@ -13,12 +13,6 @@ public class Victory : UICanvas
         moneyGain.text = "Gained " + LevelManager.Ins.totalCoinGet + " coin";
     }
     
-    public override void Close()
-    {
-        Time.timeScale = 1;
-        base.Close();
-    }
-    
     public void OnClickMainMenu()
     {
         GameManager.Ins.ChangeState(GameState.MainMenu);
@@ -29,8 +23,6 @@ public class Victory : UICanvas
 
     public void OnClickContinue()
     {
-        UIManager.Ins.CloseAll();
-        UIManager.Ins.OpenUI<Gameplay>();
-        LevelManager.Ins.OpenNextLevelUI();
+        Close();
     }
 }

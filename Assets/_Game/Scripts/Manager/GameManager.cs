@@ -15,15 +15,15 @@ public class GameManager : Dispatcher<GameManager>
 
     private void Awake()
     {
-        // Input.multiTouchEnabled = false;
-        // Application.targetFrameRate = 60;
-        // Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        // const int maxScreenHeight = 1280;
-        // float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
-        // if (Screen.currentResolution.height > maxScreenHeight)
-        // {
-        //     Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
-        // }
+        Input.multiTouchEnabled = false;
+        Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        const int maxScreenHeight = 1280;
+        float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
+        if (Screen.currentResolution.height > maxScreenHeight)
+        {
+            Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+        }
     }
 
     public void ChangeState(GameState gameStateI)

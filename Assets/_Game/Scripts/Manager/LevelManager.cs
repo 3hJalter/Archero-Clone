@@ -197,6 +197,11 @@ public class LevelManager : Singleton<LevelManager>
         UIManager.Ins.OpenUI<NextLevel>().OnInit();
     }
 
+    internal bool IsLastLevel()
+    {
+        return levelIndex >= GameData.Ins.StageDataList[stageIndex].CountLevel() - 1;
+    }
+    
     internal void OnNextLevel()
     {
         levelIndex++;

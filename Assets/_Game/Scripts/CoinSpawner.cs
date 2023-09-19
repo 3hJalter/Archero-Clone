@@ -33,6 +33,7 @@ public class CoinSpawner : HMonoBehaviour
                     if (i1 != count - 1) return;
                     CollectCoin();
                     currentLevel.OpenDoor();
+                    if (LevelManager.Ins.IsLastLevel()) UIManager.Ins.OpenUI<Victory>();
                     LevelManager.Ins.AddTotalCoin();
                 });
         }
