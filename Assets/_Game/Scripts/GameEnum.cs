@@ -44,6 +44,7 @@ public enum BulletType
     BulletArrow = PoolType.BulletArrow,
     BulletBomb = PoolType.BulletBomb,
     BulletMageShoot = PoolType.BulletMageShoot,
+    BulletBSpiderShoot = PoolType.BulletBSpiderShoot
 }
 
 public enum ShopType

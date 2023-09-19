@@ -4,17 +4,17 @@ public class Settings : UICanvas
 {
     public override void Open()
     {
-        Time.timeScale = 0;
+        GameManager.Ins.ChangeState(GameState.Pause);
         base.Open();
     }
 
     public override void Close()
     {
-        Time.timeScale = 1;
+        GameManager.Ins.ChangeState(GameState.InGame);
         base.Close();
     }
 
-    private void StillFreezeClose()
+    private void StillPauseClose()
     {
         base.Close();
     }
@@ -34,7 +34,7 @@ public class Settings : UICanvas
     public void MainMenuButton()
     {
         UIManager.Ins.OpenUI<GoMainMenuPopup>();
-        StillFreezeClose();
+        StillPauseClose();
     }
     
 }

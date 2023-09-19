@@ -25,6 +25,22 @@ public abstract class Entity : GameUnit
     protected bool IsCancelAttack;
     public Dictionary<SkillType, Skill> SkillDic { get; protected set; }
 
+    private void Start()
+    {
+        GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPause);
+        GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnPause);
+    }
+
+    private void OnPause()
+    {
+        anim.speed = 0;   
+    }
+    
+    private void OnUnPause()
+    {
+        anim.speed = 1f;
+    }
+    
     public bool IsDie()
     {
         return entityData.health <= 0;

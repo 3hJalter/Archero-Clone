@@ -1,23 +1,29 @@
-using UnityEngine.UI;
+using TMPro;
+using UnityEngine;
 
 public class Lose : UICanvas
 {
-    public Text score;
+    [SerializeField] private TextMeshProUGUI moneyGain;
+    [SerializeField] private TextMeshProUGUI stageReach;
 
-    public void MainMenuButton()
+    public void OnInit()
     {
-        
-        UIManager.Ins.OpenUI<MainMenu>();
-        GameManager.Ins.ChangeState(GameState.MainMenu);
-        // LevelManager.Ins.SetupLevel();
-        Close();
+        stageReach.text = "Reached stage " + LevelManager.Ins.StageIndex + " "
+            + LevelManager.Ins.LEVELIndex;
+        moneyGain.text = "Gained " + LevelManager.Ins.totalCoinGet + " coin";
     }
-
-    public void RetryButton()
+    
+    public override void Close()
     {
-        UIManager.Ins.OpenUI<Gameplay>();
-        GameManager.Ins.ChangeState(GameState.InGame);
-        // LevelManager.Ins.SetupLevel();
-        Close();
+        Time.timeScale = 1;
+        base.Close();
+    }
+    
+    public void OnClickMainMenu()
+    {
+        GameManager.Ins.ChangeState(GameState.MainMenu);
+        CameraFollower.Ins.ChangeState(CameraState.MainMenu);
+        UIManager.Ins.CloseAll();
+        LevelManager.Ins.OnResetStage();
     }
 }

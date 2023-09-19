@@ -1,10 +1,13 @@
-﻿using DG.Tweening;
+﻿using System;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Bullet : GameUnit, IInteractWallObject
 {   
     [SerializeField] protected LayerMask targetLayer;
     [SerializeField] private TrailRenderer trailRenderer;
+    [SerializeField] private ParticleSystem particle;
     private Vector3 _currentPos;
     private int _damage;
     private RaycastHit _hit;
@@ -15,8 +18,15 @@ public class Bullet : GameUnit, IInteractWallObject
     protected Vector3 velocity;
     protected float velocityScale;
 
+    private void Start()
+    {
+        GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPause);
+        GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnpause);
+    }
+
     protected void Update()
     {
+        if (!GameManager.Ins.IsState(GameState.InGame)) return;
         if (isHitWall) return;
         _currentPos = Tf.position;
         if (IsHitEnemy(out _hit)) OnHitTarget();
@@ -24,6 +34,24 @@ public class Bullet : GameUnit, IInteractWallObject
         _timeToDeSpawn -= Time.deltaTime;
     }
 
+    private float _trailTime;
+
+    private void OnPause()
+    {
+        if (trailRenderer != null)
+        {
+            _trailTime = trailRenderer.time;
+            trailRenderer.time = Mathf.Infinity;
+        }
+        if (particle != null) particle.Pause();
+    }
+
+    private void OnUnpause()
+    {   
+        if (trailRenderer != null) trailRenderer.time = _trailTime;
+        if (particle != null) particle.Play();
+    }
+    
     protected virtual void OnReachDestination()
     {
     }
@@ -36,11 +64,14 @@ public class Bullet : GameUnit, IInteractWallObject
         targetPos = targetInput + Vector3.up * offsetY;
         velocityScale = velocityScaleIn;
         _damage = damageIn;
+        if (particle == null) return;
+        particle.Simulate(0f, true, true);
+        particle.Play();
     }
 
     protected void OnDeSpawn()
     {
-        trailRenderer.Clear();
+        if (trailRenderer != null) trailRenderer.Clear();
         SimplePool.Despawn(this);
     }
 

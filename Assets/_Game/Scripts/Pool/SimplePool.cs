@@ -367,5 +367,6 @@ public enum PoolType
     // OtherBullet
     BulletArrow = 52,
     BulletBomb = 53,
-    BulletMageShoot = 54
+    BulletMageShoot = 54,
+    BulletBSpiderShoot = 55,
 }

@@ -15,6 +15,7 @@ public class Revive : UICanvas
         _reviveTime = 5f;
         reviveButton.SetActive(true);
         mainMenuButton.SetActive(false);
+        GameManager.Ins.ChangeState(GameState.Pause);
     }
     
     private void Update()
@@ -29,13 +30,13 @@ public class Revive : UICanvas
     
     public override void Open()
     {
-        Time.timeScale = 0;
+        // Time.timeScale = 0;
         base.Open();
     }
 
     public override void Close()
     {
-        Time.timeScale = 1;
+        // Time.timeScale = 1;
         base.Close();
     }
     

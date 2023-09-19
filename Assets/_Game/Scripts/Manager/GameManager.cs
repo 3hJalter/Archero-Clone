@@ -1,13 +1,15 @@
+using DG.Tweening;
 using UnityEngine;
 
 public enum GameState
 {
     MainMenu,
     InGame,
-    Pause
+    Pause,
+    Transition,
 }
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : Dispatcher<GameManager>
 {
     [SerializeField] private GameState gameState;
 
@@ -26,6 +28,16 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeState(GameState gameStateI)
     {
+        if (gameStateI == GameState.Pause)
+        {
+            DOTween.PauseAll();
+            PostEvent(EventID.Pause);
+        }
+        else
+        {
+            DOTween.PlayAll();
+            PostEvent(EventID.UnPause);
+        }
         gameState = gameStateI;
     }
 
@@ -33,4 +45,6 @@ public class GameManager : Singleton<GameManager>
     {
         return gameState == gameStateI;
     }
+    
+    
 }

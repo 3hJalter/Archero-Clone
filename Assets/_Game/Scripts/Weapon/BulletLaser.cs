@@ -5,6 +5,7 @@ public class BulletLaser : Bullet
 
     private void FixedUpdate()
     {
+        if (!GameManager.Ins.IsState(GameState.InGame)) return;
         // Move the bullet in a straight line
         if (isHitWall) return;
         Vector3 newPosition = transform.position + (velocity * Time.fixedDeltaTime);
