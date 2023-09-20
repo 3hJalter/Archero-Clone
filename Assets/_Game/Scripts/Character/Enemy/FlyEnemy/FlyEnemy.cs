@@ -12,9 +12,8 @@ public class FlyEnemy : Enemy
     
     private void Update()
     {
-        if (!GameManager.Ins.IsState(GameState.InGame)) return;
-        if (entityState == EntityState.Die) OnDeSpawn();
-        else StateMachine?.Execute();
+        if (!GameManager.Ins.IsState(GameState.InGame) || IsDie()) return;
+        StateMachine?.Execute();
     }   
 
     protected bool IsReachDestination()

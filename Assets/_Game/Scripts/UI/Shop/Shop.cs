@@ -35,7 +35,7 @@ public class Shop : UICanvas
     private void OnInit()
     {
         coinTxt.text = GameData.Ins.PlayerData.coin.ToString();
-        _shopItemPool.OnInit(prefab, 10, content);
+        _shopItemPool.OnInit(prefab, 0, content);
         for (int i = 0; i < shopBarList.Count; i++) shopBarList[i].SetShop(this);
         // SelectBar(shopBarList[(int) ShopType.Weapon]);
         currentShopBar = shopBarList[(int)ShopType.Weapon];

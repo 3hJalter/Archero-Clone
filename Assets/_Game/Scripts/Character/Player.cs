@@ -20,26 +20,15 @@ public class Player : Entity, IInteractWallObject
     
     private void FixedUpdate()
     {
-        if (!GameManager.Ins.IsState(GameState.InGame))
+        if (!GameManager.Ins.IsState(GameState.InGame) || IsDie())
         {
             rb.velocity = Vector3.zero;
             return;
         }
-        switch (entityState)
-        {
-            case EntityState.Die:
-                rb.velocity = Vector3.zero;
-                OnDeSpawn();
-                break;
-            case EntityState.Alive:
-            {
-                _input = GetInputAxis();
-                if (_input.sqrMagnitude < 0) return;
-                if (CanMove(_input)) OnMove();
-                else OnStop();
-                break;
-            }
-        }
+        _input = GetInputAxis();
+        if (_input.sqrMagnitude < 0) return;
+        if (CanMove(_input)) OnMove();
+        else OnStop();
     }
 
     public override void OnInit()
@@ -145,7 +134,13 @@ public class Player : Entity, IInteractWallObject
         CancelInvoke();
         IsCancelAttack = true;
     }
-    
+
+    protected override void OnDie()
+    {
+        base.OnDie();
+        UIManager.Ins.CloseAll();
+    }
+
     // private void UpgradeSkill(Skill skill)
     // {
     //     if (!SkillDic.ContainsKey(skill.SkillType))
@@ -158,6 +153,12 @@ public class Player : Entity, IInteractWallObject
     //         SkillDic[skill.SkillType].UpgradeSkill();
     //     }
     // }
+    
+    public void PushPlayer(Vector3 direction, float force)
+    {
+        rb.AddForce(direction * force, ForceMode.Impulse);
+    }
+    
     public void OnHitWall()
     { }
     

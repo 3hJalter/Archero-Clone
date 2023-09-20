@@ -130,7 +130,7 @@ MonoBehaviour:
   - item: {fileID: 3132339811866590319, guid: 82c46319a8968cc4da575404a92ebdef, type: 3}
     cost: 3000
     image: {fileID: 21300000, guid: 60bbae7447731bc4f8f7921a7b846832, type: 3}
-    isBought: 0
+    isBought: 1
   - item: {fileID: 2608949310437567366, guid: e5942ac261f3c5b4089bc0a9ceed852a, type: 3}
     cost: 3500
     image: {fileID: 21300000, guid: f5d61e52e0c02c7499cc3e23eb8c7f3f, type: 3}

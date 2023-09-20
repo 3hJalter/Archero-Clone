@@ -614,7 +614,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &2596272084930874526
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -682,7 +682,7 @@ MonoBehaviour:
     attackSpeed: 0
     moveSpeed: 0
     deSpawnTime: 0
-  entityState: 0
+  notBeDetected: 0
   isNearPlayer: 0
   navMeshAgent: {fileID: 2596272084930874527}
   bullet: {fileID: 7319263497849517514, guid: 65fc395b872f60a47a62bf3d8f85b02c, type: 3}
@@ -727,9 +727,9 @@ BoxCollider:
   m_GameObject: {fileID: 2596272084930874498}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 2, z: 4}
+  m_Size: {x: 3.5, y: 2, z: 3.5}
   m_Center: {x: 0, y: 1, z: -1.5}
 --- !u!65 &2711435749973083381
 BoxCollider:
@@ -740,10 +740,10 @@ BoxCollider:
   m_GameObject: {fileID: 2596272084930874498}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 2, z: 2}
-  m_Center: {x: 0, y: 1, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 1.25}
 --- !u!1 &2596272084934414917
 GameObject:
   m_ObjectHideFlags: 0

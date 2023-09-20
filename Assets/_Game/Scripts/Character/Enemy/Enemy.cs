@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,15 +14,29 @@ public class Enemy : Entity
     protected Player playerTrigger;
     protected Transform playerTf;
     protected float timeHitPlayerAgain = 1f;
-
+    private bool _lockTrigger;
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag(Constants.TAG_PLAYER)) return;
+        // if (!other.CompareTag(Constants.TAG_PLAYER)) return;
+        OnTriggerLogic(other);   
+    }
+
+
+    protected virtual void OnTriggerLogic(Collider other)
+    {
+        if (_lockTrigger) return ;
+        _lockTrigger = true;
+        UnlockTrigger();
         playerTrigger = Cache.GetPlayer(other);
         isNearPlayer = true;
         playerTrigger.OnHit(entityData.damage);
     }
-
+    
+    private void UnlockTrigger()
+    {
+        DOVirtual.DelayedCall(0.5f, () => _lockTrigger = false);
+    }
+    
     private void OnTriggerExit(Collider other)
     {
         playerTrigger = null;

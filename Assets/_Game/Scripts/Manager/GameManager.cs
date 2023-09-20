@@ -31,11 +31,13 @@ public class GameManager : Dispatcher<GameManager>
         if (gameStateI == GameState.Pause)
         {
             DOTween.PauseAll();
+            AudioManager.Ins.PauseSfx();
             PostEvent(EventID.Pause);
         }
         else
         {
             DOTween.PlayAll();
+            AudioManager.Ins.UnPauseSfx();
             PostEvent(EventID.UnPause);
         }
         gameState = gameStateI;

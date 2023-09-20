@@ -22,8 +22,7 @@ public class Bat : FlyEnemy
             if (isNearPlayer)
             {
                 ChangeAnim(Constants.ANIM_ATTACK);
-                playerTrigger.OnHit(entityData.damage);
-
+                if (playerTrigger != null) playerTrigger.OnHit(entityData.damage);
             }
 
             StateMachine.ChangeState(ChaseState);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -15,11 +16,11 @@ public abstract class Entity : GameUnit
 
     [Title("Entity Data")] [SerializeField]
     protected EntityPrimitiveData entityPrimitiveData;
-    
+
 
     [SerializeField] protected EntityData entityData;
-    [SerializeField] protected EntityState entityState;
 
+    public bool notBeDetected;
     protected bool CanAttack;
     protected string CurrentAnim = " ";
     protected bool IsCancelAttack;
@@ -31,16 +32,16 @@ public abstract class Entity : GameUnit
         GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnPause);
     }
 
-    private void OnPause()
+    protected virtual void OnPause()
     {
-        anim.speed = 0;   
+        anim.speed = 0;
     }
-    
-    private void OnUnPause()
+
+    protected virtual void OnUnPause()
     {
         anim.speed = 1f;
     }
-    
+
     public bool IsDie()
     {
         return entityData.health <= 0;
@@ -62,14 +63,15 @@ public abstract class Entity : GameUnit
         healthBar.OnInit();
         skin.OnInit();
         entityCollider.enabled = true;
-        entityState = EntityState.Alive;
     }
 
     public virtual void OnHit(int damageHit)
     {
         // MORE: Add effect when hit
+        if (IsDie()) return;
         entityData.health -= damageHit;
         healthBar.OnChangeHealthBar(damageHit);
+
         if (IsDie()) OnDie();
     }
 
@@ -77,7 +79,7 @@ public abstract class Entity : GameUnit
     {
         ChangeAnim(Constants.ANIM_DIE);
         entityCollider.enabled = false;
-        entityState = EntityState.Die;
+        DOVirtual.DelayedCall(entityData.deSpawnTime, DeSpawn);
     }
 
     protected void OnDeSpawn()
@@ -128,7 +130,7 @@ public abstract class Entity : GameUnit
         entityData.health = health;
         healthBar.OnChangeHealthBar();
     }
-    
+
     [Serializable]
     protected class SpawnBulletPointAndDirection
     {
@@ -145,11 +147,5 @@ public abstract class Entity : GameUnit
         public float attackSpeed;
         public float moveSpeed;
         public float deSpawnTime;
-    }
-
-    protected enum EntityState
-    {
-        Alive,
-        Die
     }
 }

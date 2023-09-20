@@ -4,19 +4,12 @@ using UnityEngine;
 public class MainMenu : UICanvas
 {
     [SerializeField] private TextMeshProUGUI levelText;
-
-    private void OnEnable()
+    
+    public override void Setup()
     {
+        base.Setup();
         levelText.text = "Stage Reached: " +
                          GameData.Ins.GetReachedStageIndexString();
-    }
-
-    public void PlayButton()
-    {
-        LevelManager.Ins.OnStartGame();
-        CameraFollower.Ins.ChangeState(CameraState.InGame);
-        UIManager.Ins.OpenUI<Gameplay>();
-        Close();
     }
 
     public void OpenStageButton()

@@ -27,11 +27,8 @@ public class LevelManager : Singleton<LevelManager>
     private void Start()
     {
         coinInLevel = 0;
-        lastPlayerHealth = PlayerPrefs.GetInt(Constants.LAST_PLAYER_HEALTH,
-            player.GetMaxHealth());
-        totalCoinGet = PlayerPrefs.GetInt(Constants.TOTAL_COIN_GET_IN_LEVEL, 0);
-        levelIndex = PlayerPrefs.GetInt(Constants.LEVEL, 0);
-        stageIndex = PlayerPrefs.GetInt(Constants.STAGE, 0);
+        GameData.GetLastPlayedData(player, out lastPlayerHealth, out totalCoinGet, out levelIndex,
+            out stageIndex);
         // COMMENT FOR TEST
         LoadLevel();
         OnInit();
@@ -71,11 +68,6 @@ public class LevelManager : Singleton<LevelManager>
         enemyList.Add(enemy);
     }
 
-    public void OnRemoveEnemy(Enemy enemy)
-    {
-        enemyList.Remove(enemy);
-    }
-
     public void OnEnemyDeath(Enemy enemy, int coin)
     {
         enemyList.Remove(enemy);
@@ -93,7 +85,7 @@ public class LevelManager : Singleton<LevelManager>
         Enemy enemy = enemyList[0];
         for (int i = 0; i < enemyList.Count; i++)
         {
-            if (enemyList[i].IsDie()) continue;
+            if (enemyList[i].IsDie() || enemyList[i].notBeDetected) continue;
             float distance = Vector3.Distance(enemyList[i].Tf.position, player.Tf.position);
             if (!(distance < minDistance)) continue;
             minDistance = distance;
@@ -105,7 +97,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void OnPlayerDeath()
     {
-        UIManager.Ins.OpenUI<Revive>().OnInit();
+        UIManager.Ins.OpenUI<Revive>();
     }
 
     private void LoadLevel()
@@ -127,13 +119,6 @@ public class LevelManager : Singleton<LevelManager>
             else ResetLevelData();
         }
 
-        // if (levelIndex >= levelData.levelList.Count)
-        // {
-        //     levelIndex = 0;
-        //     PlayerPrefs.SetInt(Constants.LEVEL, level);
-        // }
-        // _currentLevel = Instantiate(levelData.levelList[levelIndex]);
-
         _currentLevel = Instantiate(GameData.Ins.StageDataList[stageIndex].GetLevel(levelIndex));
         _currentLevel.OnInit();
         OnSpawnEnemy();
@@ -147,6 +132,7 @@ public class LevelManager : Singleton<LevelManager>
     public void OnStartGame()
     {
         GameManager.Ins.ChangeState(GameState.InGame);
+        AudioManager.Ins.PlayBgm(_currentLevel.LEVELType == LevelType.Boss ? BgmType.Boss : BgmType.InGame);
         // OpenNextLevelUI();
     }
 
@@ -169,8 +155,10 @@ public class LevelManager : Singleton<LevelManager>
         LoadLevel();
         OnInit();
         coinInLevel = 0;
-
-        if (openMainMenu) UIManager.Ins.OpenUI<MainMenu>();
+        if (!openMainMenu) return;
+        UIManager.Ins.OpenUI<MainMenu>();
+        AudioManager.Ins.PlayBgm(BgmType.MainMenu);
+        AudioManager.Ins.StopSfx();
     }
 
     internal void OnOutStage()
@@ -194,20 +182,19 @@ public class LevelManager : Singleton<LevelManager>
 
     internal void OpenNextLevelUI()
     {
-        UIManager.Ins.OpenUI<NextLevel>().OnInit();
+        UIManager.Ins.OpenUI<NextLevel>();
     }
 
     internal bool IsLastLevel()
     {
         return levelIndex >= GameData.Ins.StageDataList[stageIndex].CountLevel() - 1;
     }
-    
+
     internal void OnNextLevel()
     {
         levelIndex++;
-        PlayerPrefs.SetInt(Constants.TOTAL_COIN_GET_IN_LEVEL, totalCoinGet);
         lastPlayerHealth = player.GetHealth();
-        PlayerPrefs.SetInt(Constants.LAST_PLAYER_HEALTH, lastPlayerHealth);
+        GameData.SavePlayerLastPlayedData(lastPlayerHealth, totalCoinGet);
         if (levelIndex >= GameData.Ins.StageDataList[stageIndex].CountLevel())
         {
             GameData.Ins.StageDataList[stageIndex].PassStage();
@@ -239,14 +226,14 @@ public class LevelManager : Singleton<LevelManager>
 
     private void SaveStage()
     {
-        PlayerPrefs.SetInt(Constants.LEVEL, levelIndex);
-        PlayerPrefs.SetInt(Constants.STAGE, stageIndex);
+        GameData.SaveLevelAndStageData(stageIndex, levelIndex);
     }
 
     private void ResetStageData()
     {
-        PlayerPrefs.SetInt(Constants.STAGE, 0);
-        PlayerPrefs.SetInt(Constants.LEVEL, 0);
+        levelIndex = 0;
+        stageIndex = 0;
+        GameData.SaveLevelAndStageData(stageIndex, levelIndex);
     }
 
     public void ResetLevelData(bool isNextStageReset = false)
@@ -255,9 +242,8 @@ public class LevelManager : Singleton<LevelManager>
         levelIndex = 0;
         totalCoinGet = 0;
         lastPlayerHealth = player.GetMaxHealth();
-        PlayerPrefs.SetInt(Constants.LAST_PLAYER_HEALTH, lastPlayerHealth);
-        PlayerPrefs.SetInt(Constants.TOTAL_COIN_GET_IN_LEVEL, totalCoinGet);
-        PlayerPrefs.SetInt(Constants.STAGE, stageIndex);
-        PlayerPrefs.SetInt(Constants.LEVEL, levelIndex);
+        GameData.SavePlayerLastPlayedData(lastPlayerHealth, totalCoinGet);
+        GameData.SaveLevelAndStageData(stageIndex, levelIndex);
+
     }
 }

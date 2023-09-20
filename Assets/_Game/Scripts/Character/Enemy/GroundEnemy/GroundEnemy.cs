@@ -16,19 +16,17 @@ public class GroundEnemy : Enemy
 
     private void Update()
     {
-        if (!GameManager.Ins.IsState(GameState.InGame))
+        if (!GameManager.Ins.IsState(GameState.InGame) || IsDie())
         {
-            NavMeshAgent.isStopped = true;
+            if (NavMeshAgent.hasPath) NavMeshAgent.isStopped = true;
             return;
         }
-
         if (playerTrigger != null && !playerTrigger.IsDie())
         {
             HitPlayerAgain();
         }
         if (NavMeshAgent.isStopped) NavMeshAgent.isStopped = false;
-        if (entityState == EntityState.Die) OnDeSpawn();
-        else StateMachine?.Execute();
+        StateMachine?.Execute();
     }
 
     private void HitPlayerAgain()
@@ -41,10 +39,27 @@ public class GroundEnemy : Enemy
         }
     }
 
+    protected override void OnPause()
+    {
+        base.OnPause();
+        if (!navMeshAgent.hasPath) return;
+        navMeshAgent.velocity = Vector3.zero;
+        navMeshAgent.isStopped = true;
+    }
+
+    protected override void OnUnPause()
+    {
+        base.OnUnPause();
+        if (navMeshAgent.hasPath)
+            navMeshAgent.isStopped = false;
+    }
+
     protected override void OnDie()
     {
         base.OnDie();
+        if (!navMeshAgent.hasPath) return;
         NavMeshAgent.isStopped = true;
+        NavMeshAgent.velocity = Vector3.zero;
     }
 
     protected bool IsReachDestination()

@@ -11,9 +11,10 @@ public class NextLevel : UICanvas
         GameManager.Ins.ChangeState(GameState.InGame);
         base.Close();
     }
-    
-    public void OnInit()
+
+    public override void Setup()
     {
+        base.Setup();
         panel.gameObject.SetActive(true);
         GameManager.Ins.ChangeState(GameState.Transition);
         DOVirtual.Float(0,1, 0.5f, TransparentImage).OnComplete(
@@ -32,6 +33,7 @@ public class NextLevel : UICanvas
             panel.gameObject.SetActive(false);
             showBossAnim.Play();
             CameraFollower.Ins.targetTf = LevelManager.Ins.GetCurrentLevelBossSpawnPoint();
+            AudioManager.Ins.PlayBgm(BgmType.Boss);
             float halfAnimTime = showBossAnim.clip.length / 2;
             DOVirtual.DelayedCall(halfAnimTime, OnHalfAnim)
                 .SetEase(Ease.Linear)

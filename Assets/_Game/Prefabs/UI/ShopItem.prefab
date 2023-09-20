@@ -351,8 +351,12 @@ MonoBehaviour:
   itemImage: {fileID: 3807559821178169198}
   focusObj: {fileID: 6952938632858167870}
   boughtObj: {fileID: 1529737225060493228}
-  state: 0
   item: {fileID: 0}
+  itemData:
+    item: {fileID: 0}
+    cost: 0
+    image: {fileID: 0}
+    isBought: 0
 --- !u!114 &7828346142741360396
 MonoBehaviour:
   m_ObjectHideFlags: 0

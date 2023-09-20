@@ -34,6 +34,7 @@ public class BossSpider : GroundEnemy
         float timeWait = 0;
         onEnter = () =>
         {
+            ChangeCollisionColliderEnable(true);
             timeWait = 1f;
             ChangeAnim(Constants.ANIM_IDLE);
         };
@@ -83,19 +84,32 @@ public class BossSpider : GroundEnemy
         }
     }
 
+    private bool CanCreateNewDestination(out Vector3 destination)
+    {
+        Vector3 position = Tf.position;
+        Vector3 direction = (playerTf.position - position).normalized;
+        Vector3 sampleDestination = position + direction * 30f;
+        if (NavMesh.SamplePosition(sampleDestination, out NavMeshHit hit, 30f, NavMesh.AllAreas))
+        {
+            destination = hit.position - direction * 4.5f;
+            return true;
+        }
+        destination = default;
+        return false;
+    }
+    
     private void RollingState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         onEnter = () =>
         {
             _currentRollingNumber -= 1;
+            ChangeCollisionColliderEnable(false);
             ChangeAnimWithOutCheckCurrent(Constants.ANIM_ROLL);
-            Utilities.LookTarget(skin.Tf, playerTf);
-            Vector3 position = Tf.position;
-            Vector3 direction = (playerTf.position - position).normalized;
-            Vector3 sampleDestination = position + direction * 30f;
-            if (NavMesh.SamplePosition(sampleDestination, out NavMeshHit hit, 30f, NavMesh.AllAreas))
-                NavMeshAgent.SetDestination(hit.position - direction * 4.5f);
+            if (CanCreateNewDestination(out Vector3 destination))
+                NavMeshAgent.SetDestination(destination);
             else StateMachine.ChangeState(_bossPhase.attackAction);
+            Utilities.LookTarget(skin.Tf, playerTf);
+            AudioManager.Ins.PlaySfx(SfxType.BossSpiderRoll);
         };
         onExecute = Execute;
         onExit = () => { };
@@ -108,20 +122,26 @@ public class BossSpider : GroundEnemy
         }
     }
 
+    private void ChangeCollisionColliderEnable(bool isEnable)
+    {
+        for (int i = 0; i < collisionColliders.Count; i++)
+            collisionColliders[i].enabled = isEnable;
+    }
+
     private void JumpState(out Action onEnter, out Action onExecute, out Action onExit)
     {
         float jumpTime = 0f;
         onEnter = () =>
         {
+            ChangeCollisionColliderEnable(false);
             _isJumpOne = true;
             jumpTime = 1f;
             ChangeAnim(Constants.ANIM_JUMP);
             entityCollider.enabled = false;
-            for (int i = 0; i < collisionColliders.Count; i++)
-                collisionColliders[i].enabled = false;
-            LevelManager.Ins.OnRemoveEnemy(this);
+            notBeDetected = true;
             NavMeshAgent.SetDestination(playerTf.position);
             fallViewPoint.enabled = true;
+            AudioManager.Ins.PlaySfx(SfxType.BossSpiderJump);
         };
         onExecute = () => Utilities.DoAfterSeconds(ref jumpTime, Execute);
         onExit = () => { };
@@ -136,10 +156,10 @@ public class BossSpider : GroundEnemy
 
     private void FallState(out Action onEnter, out Action onExecute, out Action onExit)
     {
-        float fallTime = 0.5f;
+        float fallTime = 0.25f;
         onEnter = () =>
         {
-            fallTime = 0.5f;
+            fallTime = 0.25f;
             ChangeAnim(Constants.ANIM_FALL);
         };
         onExecute = () => Utilities.DoAfterSeconds(ref fallTime, Execute);
@@ -148,10 +168,9 @@ public class BossSpider : GroundEnemy
 
         void Execute()
         {
+            AudioManager.Ins.PlaySfx(SfxType.BossSpiderFall);
             entityCollider.enabled = true;
-            for (int i = 0; i < collisionColliders.Count; i++)
-                collisionColliders[i].enabled = true;
-            LevelManager.Ins.OnAddEnemy(this);
+            notBeDetected = false;
             fallViewPoint.enabled = false;
             StateMachine.ChangeState(IdleState);
         }
@@ -161,6 +180,7 @@ public class BossSpider : GroundEnemy
     {
         onEnter = () =>
         {
+            ChangeCollisionColliderEnable(true);
             _isAttack = true;
             _isAttackDone = false;
             ChangeAnim(Constants.ANIM_ATTACK);
@@ -221,6 +241,7 @@ public class BossSpider : GroundEnemy
 
     private void OnFire(int damageIn, float bulletSpeedIn)
     {
+        AudioManager.Ins.PlaySfx(SfxType.BossSpiderShoot);
         foreach (SpawnBulletPointAndDirection spawnPointIn in spawnPoints)
             FireWithDirection(bullet, damageIn, bulletSpeedIn, spawnPointIn);
     }
@@ -230,11 +251,22 @@ public class BossSpider : GroundEnemy
     {
         for (int i = 0; i < fireNumber; i++)
         {
+            // Pause if GameState is not InGame
+            while (!GameManager.Ins.IsState(GameState.InGame))
+                yield return null;
+            if (IsDie()) break;
             OnFire(damageIn, bulletSpeedIn);
             yield return new WaitForSeconds(timePerShoot);
         }
 
         _isAttackDone = true;
+    }
+
+    // Temporary
+    protected override void OnTriggerLogic(Collider other)
+    {
+        base.OnTriggerLogic(other);
+        if (playerTrigger != null) playerTrigger.PushPlayer(NavMeshAgent.velocity, 1f);
     }
 
     private class BossPhase

@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Revive : UICanvas
 {
@@ -12,8 +11,9 @@ public class Revive : UICanvas
     [SerializeField] private GameObject reviveImageObj;
     private float _reviveTime;
     private bool _timeOut;
-    public void OnInit()
+    public override void Setup()
     {
+        base.Setup();
         _timeOut = false;
         _reviveTime = 5f;
         stageReach.gameObject.SetActive(false);
@@ -53,6 +53,7 @@ public class Revive : UICanvas
     {
         GameManager.Ins.ChangeState(GameState.InGame);
         LevelManager.Ins.OnRevive();
+        UIManager.Ins.OpenUI<Gameplay>();
         Close();
     }
     

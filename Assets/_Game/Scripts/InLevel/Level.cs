@@ -23,7 +23,7 @@ public class Level : MonoBehaviour
     {
         NavMesh.RemoveAllNavMeshData();
         NavMesh.AddNavMeshData(navMeshData);
-        OnOpenOtherUI();
+        // if (levelType == LevelType.Boss) AudioManager.Ins.PlayBgm(BgmType.Boss);
     }
 
     public void OnSpawnEnemy()
@@ -40,20 +40,6 @@ public class Level : MonoBehaviour
     public void OpenDoor()
     {
         door.OpenDoor();
-    }
-
-    private void OnOpenOtherUI()
-    {
-        if (levelType == LevelType.Normal) return;
-        switch (levelType)
-        {
-            case LevelType.Tutorial:
-                // Open Tutorial UI
-                break;
-            case LevelType.Boss:
-                // UIManager.Ins.OpenUI<BossUI>().OnInit(bossSpawnPoint);
-                break;
-        }
     }
 }
 

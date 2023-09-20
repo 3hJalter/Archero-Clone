@@ -6,8 +6,9 @@ public class Victory : UICanvas
     [SerializeField] private TextMeshProUGUI moneyGain;
     [SerializeField] private TextMeshProUGUI stageReach;
 
-    public void OnInit()
+    public override void Setup()
     {
+        base.Setup();
         stageReach.text = "Reached stage " + LevelManager.Ins.StageIndex + " "
                           + LevelManager.Ins.LEVELIndex;
         moneyGain.text = "Gained " + LevelManager.Ins.totalCoinGet + " coin";
@@ -19,10 +20,14 @@ public class Victory : UICanvas
         CameraFollower.Ins.ChangeState(CameraState.MainMenu);
         UIManager.Ins.CloseAll();
         LevelManager.Ins.OnNextLevel();
+        AudioManager.Ins.PlayBgm(BgmType.MainMenu);
+        AudioManager.Ins.StopSfx();
+        UIManager.Ins.OpenUI<MainMenu>();
     }
 
     public void OnClickContinue()
     {
+        UIManager.Ins.OpenUI<Gameplay>();
         Close();
     }
 }

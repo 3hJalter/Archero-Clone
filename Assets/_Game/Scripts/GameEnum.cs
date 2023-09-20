@@ -136,4 +136,19 @@ public enum EnemyPhase
     Phase3 = 2,
 }
 
+public enum BgmType
+{
+    MainMenu = 0,
+    InGame = 1,
+    Boss = 2,
+}
+
+public enum SfxType
+{
+    // Boss Spider Venom
+    BossSpiderShoot = 0,
+    BossSpiderJump = 1,
+    BossSpiderFall = 2,
+    BossSpiderRoll = 3,
+}
 

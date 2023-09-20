@@ -10,7 +10,6 @@ public class ChooseStage : UICanvas
     private void Awake()
     {
         _stageButtonPool.OnInit(stageButtonPrefab, 0, content);
-        
     }
 
     private void OnEnable()
@@ -31,7 +30,7 @@ public class ChooseStage : UICanvas
         for (int i = 0; i < GameData.Ins.StageDataList.Count; i++)
         {
             Stage stage = GameData.Ins.StageDataList[i];
-            if (stage.IsPassed() || GameData.Ins.StageDataList[i-1].IsPassed())
+            if (i == 0 || stage.IsPassed() || GameData.Ins.StageDataList[i-1].IsPassed())
                 _stageButtonPool.Spawn().OnInit(this, GameData.Ins.StageDataList[i], i, true);
             else _stageButtonPool.Spawn().OnInit(this, GameData.Ins.StageDataList[i], i);
         }
