@@ -25,8 +25,9 @@ public class Shop : UICanvas
         OnInit();
     }
 
-    private void OnEnable()
+    public override void Setup()
     {
+        base.Setup();
         coinTxt.text = GameData.Ins.PlayerData.coin.ToString();
         currentShopBar = shopBarList[(int)ShopType.Weapon];
         currentShopBar.OnSelect();
@@ -34,12 +35,10 @@ public class Shop : UICanvas
 
     private void OnInit()
     {
-        coinTxt.text = GameData.Ins.PlayerData.coin.ToString();
+        
         _shopItemPool.OnInit(prefab, 0, content);
         for (int i = 0; i < shopBarList.Count; i++) shopBarList[i].SetShop(this);
         // SelectBar(shopBarList[(int) ShopType.Weapon]);
-        currentShopBar = shopBarList[(int)ShopType.Weapon];
-        currentShopBar.OnSelect();
     }
     
     public void OnClose()
@@ -101,4 +100,8 @@ public class Shop : UICanvas
         useButton.SetActive(currentItem.itemData.isBought);
         buyButton.SetActive(!currentItem.itemData.isBought);
     }
+
+    // protected override void RunOpenAnim()
+    // {
+    // }
 }

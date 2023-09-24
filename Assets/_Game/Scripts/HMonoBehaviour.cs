@@ -2,13 +2,13 @@
 
 public class HMonoBehaviour : MonoBehaviour
 {
-    private Transform tf;
+    private Transform _tf;
     public Transform Tf
     {
         get
         {
-            tf = tf ? tf : gameObject.transform;
-            return tf;
+            _tf = _tf ? _tf : gameObject.transform;
+            return _tf;
         }
     }
 }

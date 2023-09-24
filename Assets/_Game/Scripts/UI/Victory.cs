@@ -5,7 +5,8 @@ public class Victory : UICanvas
 {
     [SerializeField] private TextMeshProUGUI moneyGain;
     [SerializeField] private TextMeshProUGUI stageReach;
-
+    [SerializeField] private AudioClip victoryAudioClip;
+    
     public override void Setup()
     {
         base.Setup();

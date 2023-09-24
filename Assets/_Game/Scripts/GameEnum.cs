@@ -145,6 +145,7 @@ public enum BgmType
 
 public enum SfxType
 {
+    None = -1,
     // Boss Spider Venom
     BossSpiderShoot = 0,
     BossSpiderJump = 1,
@@ -152,3 +153,42 @@ public enum SfxType
     BossSpiderRoll = 3,
 }
 
+public enum EasingType
+{
+    Linear = 1,
+    InSine,
+    OutSine,
+    InOutSine,
+    InQuad,
+    OutQuad,
+    InOutQuad,
+    InCubic,
+    OutCubic,
+    InOutCubic,
+    InQuart,
+    OutQuart,
+    InOutQuart,
+    InQuint,
+    OutQuint,
+    InOutQuint,
+    InExpo,
+    OutExpo,
+    InOutExpo,
+    InCirc,
+    OutCirc,
+    InOutCirc,
+    InElastic,
+    OutElastic,
+    InOutElastic,
+    InBack,
+    OutBack,
+    InOutBack,
+    InBounce,
+    OutBounce,
+    InOutBounce,
+    Flash,
+    InFlash,
+    OutFlash,
+    InOutFlash,
+    Custom
+}

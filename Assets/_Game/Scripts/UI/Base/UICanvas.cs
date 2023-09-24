@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using DG.Tweening;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class UICanvas : MonoBehaviour
@@ -8,9 +11,24 @@ public class UICanvas : MonoBehaviour
     // private Animator _mAnimator;
     // private bool _mIsInit = false;
     // private float _mOffsetY = 0;
+    private Vector2 _initPos ;
+    
+    private RectTransform _mRectTransform;
 
-    protected RectTransform MRectTransform;
-
+    private RectTransform MRectTransform
+    {
+        get
+        {
+            _mRectTransform = _mRectTransform ? _mRectTransform : gameObject.transform as RectTransform;
+            return _mRectTransform;
+        }
+    }
+    
+    private void GetInitPos()
+    {
+        _initPos = _initPos != Vector2.zero ? MRectTransform.anchoredPosition : new Vector2(1080, 0);
+    }
+    
     private void Start()
     {
         Init();
@@ -18,7 +36,7 @@ public class UICanvas : MonoBehaviour
 
     private void Init()
     {
-        MRectTransform = GetComponent<RectTransform>();
+        GetInitPos();
         // _mAnimator = GetComponent<Animator>();
 
         //float ratio = (float)Screen.height / (float)Screen.width;
@@ -52,14 +70,38 @@ public class UICanvas : MonoBehaviour
     {
         gameObject.SetActive(true);
         //anim
+        RunOpenAnim();
+    }
+
+    protected virtual void RunOpenAnim()
+    {
+        MRectTransform.anchoredPosition = _initPos;
+        MRectTransform.DOAnchorPos(Vector2.zero, 0.2f)
+            .SetEase(Ease.Linear);
     }
 
     public virtual void Close()
     {
         UIManager.Ins.RemoveBackUI(this);
         //anim
+        RunCloseAnim(OnClose);
+    }
+
+    private void OnClose()
+    {
         gameObject.SetActive(false);
         if (isDestroyOnClose) Destroy(gameObject);
-
     }
+
+    protected virtual void RunCloseAnim(Action onCompleteAction, float time = 0.2f)
+    {
+        MRectTransform.DOAnchorPos(-_initPos, time)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                onCompleteAction?.Invoke(); 
+                MRectTransform.anchoredPosition = Vector2.zero;
+            });
+    }
+    
 }

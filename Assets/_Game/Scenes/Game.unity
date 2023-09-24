@@ -813,7 +813,7 @@ MonoBehaviour:
     attackSpeed: 0
     moveSpeed: 0
     deSpawnTime: 0
-  entityState: 0
+  notBeDetected: 0
   rb: {fileID: 547792076}
   target: {fileID: 0}
   spawnBulletPoint: {fileID: 81112195}

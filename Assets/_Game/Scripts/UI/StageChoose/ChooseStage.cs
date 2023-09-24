@@ -12,14 +12,18 @@ public class ChooseStage : UICanvas
         _stageButtonPool.OnInit(stageButtonPrefab, 0, content);
     }
 
-    private void OnEnable()
+    public override void Setup()
     {
+        base.Setup();
         OnInit();
     }
 
-    private void OnDisable()
+    
+    
+    public override void Close()
     {
         _stageButtonPool.Collect();
+        base.Close();
     }
 
     private void OnInit()
